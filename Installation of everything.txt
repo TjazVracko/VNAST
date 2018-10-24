@@ -1,0 +1,51 @@
+# za nodejs - https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
+
+wget -qO- https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+sudo apt-get install -y build-essential
+
+# za mongodb - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/#install-mongodb-community-edition
+
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+
+echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+
+sudo apt-get update
+
+sudo apt-get install -y mongodb-org
+
+#Postman (REST API test tool), POTEGNI iz: https://www.getpostman.com/apps, ali pa:
+
+wget https://dl.pstmn.io/download/latest/linux64 -O postman.tar.gz
+sudo tar -xzf postman.tar.gz -C /opt
+rm postman.tar.gz
+sudo ln -s /opt/Postman/Postman /usr/bin/postman
+
+# da dobiš postman ikonico v launcherju:
+sudo touch /usr/share/applications
+sudo nano /usr/share/applications
+# in zalimaj tole not:
+[Desktop Entry]
+Encoding=UTF-8
+Name=Postman
+Exec=postman
+Icon=/opt/Postman/resources/app/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Development;
+
+
+# npm inštalacije, to delaš v direktoriju - https://www.codementor.io/olatundegaruba/nodejs-restful-apis-in-10-minutes-q0sgsfhbd
+
+npm install --save-dev nodemon
+npm install express --save
+npm install mongoose --save
+
+
+
+# mongo navodila 
+https://michelebusta.com/the-little-things-5-initialize-a-local-mongo-db-8972d71b7715
+https://docs.mongodb.com/manual/reference/mongo-shell/
+
+

@@ -1,0 +1,19 @@
+{
+  "name": "vnast_api",
+  "version": "1.0.0",
+  "description": "REST API za VNAST App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "Nejc Klemenčič & Tjaž Vračko",
+  "license": "WTFPL",
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.3.6"
+  }
+}
