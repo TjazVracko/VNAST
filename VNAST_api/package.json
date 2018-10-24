@@ -8,7 +8,7 @@
     "start": "nodemon server.js"
   },
   "author": "Nejc Klemenčič & Tjaž Vračko",
-  "license": "WTFPL",
+  "license": "MIT",
   "devDependencies": {
     "nodemon": "^1.18.4"
   },
