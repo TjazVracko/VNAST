@@ -7,7 +7,8 @@ var express = require('express'),
   
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/VnastDB'); 
+mongoose.connect("mongodb://localhost:27017/YourDB", { useNewUrlParser: true });
+// mongoose.connect('mongodb://localhost/VnastDB'); 
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
