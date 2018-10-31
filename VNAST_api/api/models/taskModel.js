@@ -19,32 +19,10 @@ var TaskSchema = new Schema({
     status: {
         type: [{
         type: String,
-        enum: ['pending', 'ongoing', 'completed']
+        enum: ['pending', 'ongoing', 'completed']  // če ni en od teh vriant vrne api error (in pove vse variante)
         }],
         default: ['pending']
     }
 });
 
 module.exports = mongoose.model('Tasks', TaskSchema);
-
-
-// Uporabnik
-var UserSchema = new Schema({
-    username: {
-        type: String,
-        required: 'Must have username'
-    },
-    hashed_password: {
-        type: String,
-        required: 'A password must exits for the user'
-    },
-    email: {
-        type: String,
-        // required: 'A rabimo mail?'
-    },
-    // ...
-});
-module.exports = mongoose.model('Users', UserSchema);
-
-// ...
-// mogoče vsak model v posebej datoteko? Bo bolj pregledno
