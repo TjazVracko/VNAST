@@ -2,3 +2,5 @@ Autentikacija
 http://www.passportjs.org/docs/username-password/
 
 
+MongoDB help
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
