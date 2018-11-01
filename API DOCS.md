@@ -23,15 +23,18 @@ Response: Error ali {auth: true, token: JWT}
 (shrani si token v cookije al nekaj, saj ga rabiš pol za večino ostalih API klicev)
 ### /me (JWT)
 GET: {}
+
 Response: user object pripadajoč JWTju v headu:
 
 ### /login
 POST:
 * required username: string, password: string
+
 Response: {auth: true/false, token: JWT/null}
 
 ### /logout
 GET: {}
+
 Response: {auth: false, token: null }
 logout route ne invalidira JWT (saj to sploh ne gre). Za pravilni logout je potrebno JWT zbrisat na uporabniški strani
 
