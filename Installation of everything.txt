@@ -49,3 +49,6 @@ https://michelebusta.com/the-little-things-5-initialize-a-local-mongo-db-8972d71
 https://docs.mongodb.com/manual/reference/mongo-shell/
 
 
+# mongo /data/db not found
+
+
