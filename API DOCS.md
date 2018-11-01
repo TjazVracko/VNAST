@@ -36,6 +36,7 @@ Response: {auth: true/false, token: JWT/null}
 GET: {}
 
 Response: {auth: false, token: null }
+
 logout route ne invalidira JWT (saj to sploh ne gre). Za pravilni logout je potrebno JWT zbrisat na uporabniški strani
 
 ## ...
