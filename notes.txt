@@ -1,4 +1,8 @@
-Autentikacija
+# Autentikacija
 http://www.passportjs.org/docs/username-password/
+# raje tole:
+https://medium.freecodecamp.org/securing-node-js-restful-apis-with-json-web-tokens-9f811a92bb52
 
-
+# Data generation
+https://github.com/stympy/faker
+mongoimport --db DBNAME --collection COLNAME --file FILE.json
