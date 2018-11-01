@@ -8,7 +8,7 @@ module.exports = function(app) {
     
     // Authentication
     app.post('/register', authController.register_a_user);
-    app.get('/me', verify.worker, authController.who_am_i);  // <- poglej, uprabljamo middleware funkcijo za verifikacijo privilegijev
+    app.get('/me', verify.token, authController.who_am_i);
     app.post('/login', authController.login_a_user);
     app.get('/logout', authController.logout_a_user); //nepotrebno, a tukaj kot prikaz logike - za logout enostavno zbrišemo token client-side (po 24h pa itak treba ponovni login ker token expire-a)
 
@@ -16,7 +16,7 @@ module.exports = function(app) {
     // TODO: update these routes
     app.route('/tasks')
         .get(taskController.list_all_tasks)
-        .post(verify.manager, taskController.create_a_task);
+        .post(verify.manager, taskController.create_a_task);  // <- poglej, uprabljamo middleware funkcijo za verifikacijo privilegijev
 
     app.route('/tasks/:taskId')
         .get(taskController.read_a_task)
@@ -26,11 +26,11 @@ module.exports = function(app) {
     // Users
     app.route('/users')
         .get(verify.worker, userController.list_all_users)
-        .post(verify.admin, userController.create_a_user);  // samo admin lahko tukaj kreira userje, drugače imamo registracio (glej spodaj)
+        .post(verify.admin, userController.create_a_user);  // samo admin lahko tukaj kreira userje, drugače imamo registracio (glej zgoraj)
 
     app.route('/users/:userId')
         .get(verify.worker, userController.read_a_user)
-        .put(verify.worker, userController.update_a_user)  // admin only
-        .delete(verify.admin, userController.delete_a_user);  // admin only   TODO: fix this, trentno pls dont use
+        .put(verify.admin, userController.update_a_user)  // admin only
+        .delete(verify.admin, userController.delete_a_user);  // admin only
 
    };

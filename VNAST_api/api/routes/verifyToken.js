@@ -5,7 +5,7 @@ var config = require('../../config');
 var mongoose = require('mongoose'),
     User = mongoose.model('Users');
 
-// middleware funkcija za verifikacijo tokena, dodamo jo v vsak route, ki zahteva loginanega uporabnika
+// middleware funkcija za verifikacijo tokena, dodamo jo v vsak route, ki zahteva loginanega uporabnika (ki mora obstajat)
 exports.token = function(req, res, next) {
     var token = req.headers['x-access-token'];
     if (!token)
@@ -22,7 +22,7 @@ exports.token = function(req, res, next) {
                 return res.status(404).send({ auth: false, message: "You don't exist" });
                 // return res.status(403).send({ auth: false, message: "User doesn't exits" });
            
-            req.userId = decoded.id;
+            req.user = user;  // v funkcijci naprej, ki handla dejanski api klic, imamo potem že userja shranjenega v req.user (ga nerabimo z baze ponovno jemat)
             next();
         });
     });
@@ -51,7 +51,7 @@ exports.manager = function(req, res, next) {
             if(user.privilege != "manager" && user.privilege != "admin")
                 return res.status(403).send({ auth: false, message: 'Route requires manager privileges' });
             
-            req.userId = decoded.id;
+            req.user = user;;
             next();
         });
     });
@@ -76,7 +76,7 @@ exports.admin = function(req, res, next) {
             if(user.privilege != "admin")
                 return res.status(403).send({ auth: false, message: 'Route requires admin privileges' });
            
-            req.userId = decoded.id;
+            req.user = user;
             next();
         });
     });

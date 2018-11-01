@@ -14,7 +14,8 @@ exports.register_a_user =  function(req, res) {
     User.create({
       username : req.body.username,
       email : req.body.email,
-      password : hashedPassword
+      password : hashedPassword,
+      privilege : req.body.privilege
     },
     function (err, user) {
       if (err) return res.status(500).send("There was a problem registering the user.")
@@ -33,13 +34,14 @@ exports.who_am_i = function(req, res) {
     // jwt.verify(token, config.secret, function(err, decoded) {
     //     if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-    User.findById(req.userId, { password: 0 }, function (err, user) {
-        if (err) return res.status(500).send("There was a problem finding the user.");
-        if (!user) return res.status(404).send("No user found.");
+    // User.findById(req.userId, { password: 0 }, function (err, user) {
+    //     if (err) return res.status(500).send("There was a problem finding the user.");
+    //     if (!user) return res.status(404).send("No user found.");
         
-        res.json(user);
-        });
+    //     res.json(user);
+    //     });
     // });
+    res.json(req.user);
 };
 
 exports.login_a_user = function(req, res) {
