@@ -3,6 +3,7 @@ module.exports = function(app) {
     var taskController = require('../controllers/taskController');
     var userController = require('../controllers/userController');
     var authController = require('../controllers/authController');
+    var commentController = require('../controllers/commentController');
 
     var verify = require('./verifyToken');
     
@@ -33,4 +34,9 @@ module.exports = function(app) {
         .put(verify.admin, userController.update_a_user)  // admin only
         .delete(verify.admin, userController.delete_a_user);  // admin only
 
+    //okej route?
+    app.route('/comments/:taskId')
+        .get(verify.worker, commentController.list_all_comments)
+        .post(verify.worker, commentController.create_a_comment)   //kako pošljemo who_am_i kot parameter?
+        .delete(verify.worker, commentController.delete_a_comment);
    };

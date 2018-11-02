@@ -7,7 +7,7 @@ V request BODYju se pošilja JSON objekt zahtev.
 
 od routa dobimo JSON objekt kot odgovor
 
-Nekateri routi pa zahtevajo JWT (JSON Web Token) za potrebe avtorizacije - le tega pošiljamo v HEAD, na način {x-access-token: TokenString}
+Nekateri routi pa zahtevajo JWT (JSON Web Token) za potrebe avtorizacije - le tega pošiljamo v HEAD, na način {x-access-token: TokenString}, token pošiljamo brez narekovajev
 JWT ima vlogo avtentikacije (iz njega se da dobit userID) in avtorizacije (porepreči workeju dostop do manager zadev, recimo)
 JWT je veljaven 24 ur od pridobitve, nato ti bo api vse requeste zavrnil - promptaj ponovni login.
 Če route zahteva JWT bo to ozačeno v oklepajih poleg routa

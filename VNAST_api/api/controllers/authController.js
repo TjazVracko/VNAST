@@ -41,7 +41,7 @@ exports.who_am_i = function(req, res) {
     //     res.json(user);
     //     });
     // });
-    res.json(req.user);
+    res.json(req.user._id);
 };
 
 exports.login_a_user = function(req, res) {
@@ -54,7 +54,7 @@ exports.login_a_user = function(req, res) {
         expiresIn: 86400 // expires in 24 hours
       });
       res.json({ auth: true, token: token });
-    });
+    })
 };
 
 exports.logout_a_user = function(req, res) {
