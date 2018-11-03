@@ -4,7 +4,8 @@ var express = require('express'),
     mongoose = require('mongoose'),
     Task = require('./api/models/taskModel'), //created model loading here
     User = require('./api/models/userModel'),
-    Comment = require('./api/models/commentModel')
+    Comment = require('./api/models/commentModel'),
+    Group = require('./api/models/groupModel')
 
     bodyParser = require('body-parser'),
     config = require('./config');

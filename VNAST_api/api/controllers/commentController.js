@@ -13,9 +13,7 @@ exports.list_all_comments = function(req, res) {
 exports.create_a_comment = function(req, res) {
     var new_comment = new Comment(req.body);
     new_comment.assigned_to_task = req.params.taskId;
-
-    //kako inicializiramo crated_by iz who_am_i?
-
+    new_comment.created_by = req.user._id;
     new_comment.save(function(err, comment) {
     if (err)
         res.send(err);

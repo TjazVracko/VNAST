@@ -21,7 +21,8 @@ var UserSchema = new Schema({
             enum: ['worker', 'manager', 'admin']
             }],
             default: ['worker']
-    }
+    },
+    assigned_to_group:  Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('Users', UserSchema);
