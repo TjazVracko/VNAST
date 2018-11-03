@@ -27,6 +27,7 @@ exports.register_a_user =  function(req, res) {
     }); 
 };
 
+// TODO: projection nad passwordom nimamo več - to je slabo, naredi tak kot je blo prej
 exports.who_am_i = function(req, res) {
     // var token = req.headers['x-access-token'];
     // if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
