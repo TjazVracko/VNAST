@@ -31,12 +31,16 @@ module.exports = function(app) {
 
     app.route('/tasks/:taskId')
         .get(verify.worker, taskController.read_a_task)
-        .put(verify.worker, taskController.update_a_task)
+        .put(verify.worker, taskController.update_a_task)  // če je tak lahko worker vse spreminja, namesto da bi lahko spremenil samo status, ampak naj bo
         .delete(verify.manager, taskController.delete_a_task);
     
     // taski prijavljenega workerja
     app.route('/tasks/get/mytasks')
         .get(verify.worker, taskController.read_my_tasks);
+
+    // tasko prijavljenega managerja
+    app.route('/tasks/get/managedtasks')
+        .get(verify.manager, taskController.read_managed_tasks);
 
     // Comments
     app.route('/tasks/:taskId/comments')
@@ -53,7 +57,7 @@ module.exports = function(app) {
         .get(verify.manager, groupController.list_all_groups)
         .post(verify.manager, groupController.create_a_group);
 
-    // grupre, ki jih je naredo prijavljen manager
+    // grupe, ki jih je naredo prijavljen manager
     app.route('/groups/get/managerof')
         .get(verify.manager, groupController.list_managed_groups);
 

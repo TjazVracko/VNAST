@@ -1,6 +1,6 @@
 var express = require('express'),
     app = express(),
-    port = process.env.PORT || 27017,
+    port = process.env.PORT || 3000,
     mongoose = require('mongoose'),
     Task = require('./api/models/taskModel'), //created model loading here
     User = require('./api/models/userModel'),

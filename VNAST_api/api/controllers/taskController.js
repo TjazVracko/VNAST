@@ -14,6 +14,7 @@ exports.list_all_tasks = function(req, res) {
 
 exports.create_a_task = function(req, res) {
     var new_task = new Task(req.body);
+    new_task.created_by = req.user._id;
     new_task.save(function(err, task) {
     if (err)
         res.send(err);
@@ -50,6 +51,14 @@ exports.delete_a_task = function(req, res) {
 
 exports.read_my_tasks = function(req, res) {
     Task.find({assigned_to_worker: req.user._id}, function(err, tasks) {
+        if (err)
+            res.send(err);
+        res.json(tasks);
+    });
+};
+
+exports.read_managed_tasks = function(req, res) {
+    Task.find({created_by: req.user._id}, function(err, tasks) {
         if (err)
             res.send(err);
         res.json(tasks);

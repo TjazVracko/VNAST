@@ -68,7 +68,7 @@ exports.read_all_workers_in_group = function(req, res) {
     Group.find({_id: req.params.groupId}, function(err, group) {
         if (err)
             res.send(err);
-        User.find({_id: {$in: group.workers}}, function(err, workers) {
+        User.find({_id: {$in: group[0].workers}}, { password: 0 }, function(err, workers) {
             if (err)
                 res.send(err);
             res.json(workers);

@@ -10,6 +10,7 @@ var DocumentSchema = new Schema({
 
 // Naloga
 var TaskSchema = new Schema({
+    created_by: Schema.Types.ObjectId,  // manager, ki je naredo task
     name: {
         type: String,
         required: 'Enter the name of the task'  // če preko posta ustvariš objekt in ne pošleš "required" polja, potem api vrne error msg v katerem je ta text zapisan
@@ -21,7 +22,8 @@ var TaskSchema = new Schema({
     documents: [DocumentSchema],  //TODO: to je za future 3 tedne, tukaj samo kot placeholder
     priority: {
         type: String,
-        enum: ['1', '2', '3', '4', '5']
+        enum: ['1', '2', '3', '4', '5'],
+        default: ['3']
     },
     created_date: {
         type: Date,
