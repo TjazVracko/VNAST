@@ -8,9 +8,13 @@ V request BODYju se pošilja JSON objekt zahtev.
 od routa dobimo JSON objekt kot odgovor
 
 Nekateri routi pa zahtevajo JWT (JSON Web Token) za potrebe avtorizacije - le tega pošiljamo v HEAD, na način {x-access-token: tokenString}, token pošiljamo brez narekovajev
+
 JWT ima vlogo avtentikacije (iz njega se da dobit userID) in avtorizacije (prepreči workeju dostop do manager zadev, recimo)
+
 JWT je veljaven 24 ur od pridobitve, nato ti bo api vse requeste zavrnil - promptaj ponovni login.
+
 Če route zahteva JWT bo to ozačeno v oklepajih poleg routa
+
 Če route zahteva posebne privilegije (nrp. manager+, bo to zapisano v tem istem oklepaju)
 
 Nekateri routi vsebujejo spremenljivke, le te so označene z vodilnim ':'
@@ -42,28 +46,28 @@ GET:
 logout route ne invalidira JWT (saj to sploh ne gre). Za pravilni logout je potrebno JWT zbrisat na uporabniški strani
 
 ## Users
-User objekt izgleda takole:
-var UserSchema = new Schema({
-    username: {
-        type: String,
-        required: 'Must have username'
-    },
-    password: {
-        type: String,
-        required: 'A password must exits for the user'
-    },
-    email: {
-        type: String,
-    },
-    privilege: {
-        type: [{
-            type: String,
-            enum: ['worker', 'manager', 'admin']
-            }],
-            default: ['worker']
-    },
-});
-
+User objekt izgleda takole:  
+var UserSchema = new Schema({  
+    username: {  
+        type: String,  
+        required: 'Must have username'  
+    },   
+    password: {  
+        type: String,  
+        required: 'A password must exits for the user'  
+    },  
+    email: {  
+        type: String,  
+    },  
+    privilege: {  
+        type: [{  
+            type: String,  
+            enum: ['worker', 'manager', 'admin']  
+            }],   
+            default: ['worker']  
+    },  
+});  
+  
 Opomba: passwordi so hashani - ko pa ti kličeš api in dobiš User objekt nazaj, sploh ne dobiš password fielda (safety pa to)
 
 ### /users
@@ -84,40 +88,40 @@ DELETE (JWT admin+)
 * *Response*: Error ali { message: 'User successfully deleted' }
 
 ## Tasks
-Task objekt:
-var TaskSchema = new Schema({
-    created_by: Schema.Types.ObjectId,  // manager, ki je naredo task
-    name: {
-        type: String,
-        required: 'Enter the name of the task' 
-    },
-    description: {
-        type: String,
-        required: 'Enter the description of the task'
-        },
-    documents: [DocumentSchema],
-    priority: {
-        type: String,
-        enum: ['1', '2', '3', '4', '5'],
-        default: ['3']
-    },
-    created_date: {
-        type: Date,
-        default: Date.now
-    },
-    time_limit: {
-        type: Date  // format je ISO Date (YYYY-MM-DDTHH:MM:SSZ, npr 2018-10-04T10:18:22.3Z)
-    },
-    status: {
-        type: [{
-        type: String,
-        enum: ['pending', 'ongoing', 'canceled', 'completed']  // če ni en od teh vriant vrne api error (in pove vse variante)
-        }],
-        default: ['pending']
-    },
-    assigned_to_worker: Schema.Types.ObjectId,
-    assigned_to_group:  Schema.Types.ObjectId
-});
+Task objekt:  
+var TaskSchema = new Schema({  
+    created_by: Schema.Types.ObjectId,  // manager, ki je naredo task  
+    name: {  
+        type: String,  
+        required: 'Enter the name of the task'   
+    },  
+    description: {  
+        type: String,  
+        required: 'Enter the description of the task'  
+        },  
+    documents: [DocumentSchema],    
+    priority: {  
+        type: String,  
+        enum: ['1', '2', '3', '4', '5'],  
+        default: ['3']  
+    },  
+    created_date: {  
+        type: Date,  
+        default: Date.now  
+    },  
+    time_limit: {  
+        type: Date  // format je ISO Date (YYYY-MM-DDTHH:MM:SSZ, npr 2018-10-04T10:18:22.3Z)  
+    },  
+    status: {  
+        type: [{  
+        type: String,  
+        enum: ['pending', 'ongoing', 'canceled', 'completed']  // če ni en od teh vriant vrne api error (in pove vse variante)  
+        }],  
+        default: ['pending']  
+    },  
+    assigned_to_worker: Schema.Types.ObjectId,  
+    assigned_to_group:  Schema.Types.ObjectId  
+});  
 ### /tasks
 GET  (JWT worker+):
 * *Response*: array Task objektov (vseh v bazi)
@@ -144,22 +148,22 @@ GET (JWT manager+):
 * *Response*: array Task obejktov, ki jih je kreiral ta manager (njegov id je v created_by)
 
 ## Comments
-Objekt komentarja:
-var CommentSchema = new Schema({
-    created_by: {
-        type: Schema.Types.ObjectId,
-        required: 'Someone had to create this'  //Če ne pošljemo, kdo je ustvaril comment API vrne error
-    },
-    created_date: {
-        type: Date,
-        default: Date.now
-    },
-    content: {
-        type: String,
-        required: 'Enter the content of the comment'
-    },
-    assigned_to_task: Schema.Types.ObjectId
-});
+Objekt komentarja:  
+var CommentSchema = new Schema({  
+    created_by: {  
+        type: Schema.Types.ObjectId,  
+        required: 'Someone had to create this'  //Če ne pošljemo, kdo je ustvaril comment API vrne error  
+    },  
+    created_date: {  
+        type: Date,  
+        default: Date.now  
+    },  
+    content: {  
+        type: String,  
+        required: 'Enter the content of the comment'  
+    },  
+    assigned_to_task: Schema.Types.ObjectId  
+});  
 
 ### /tasks/:taskId/comments
 GET  (JWT worker+):
@@ -178,21 +182,21 @@ DELETE (JWT worker+)
 
 ## Groups
 Group model:
-var GroupSchema = new Schema({
-    name: {
-        type: String,
-        required: 'Name the group'
-    },
-    created_by: {
-        type: Schema.Types.ObjectId,  // to je manager, ki je naredil grupo
-        required: 'Someone had to create this'  //Če ne pošljemo, kdo je ustvaril comment API vrne error
-    },
-    created_date: {
-        type: Date,
-        default: Date.now
-    },
-    workers: [Schema.Types.ObjectId]  // workeji, ki so v tej skupini
-});
+var GroupSchema = new Schema({  
+    name: {  
+        type: String,  
+        required: 'Name the group'  
+    },  
+    created_by: {  
+        type: Schema.Types.ObjectId,  // to je manager, ki je naredil grupo  
+        required: 'Someone had to create this'  //Če ne pošljemo, kdo je ustvaril comment API vrne error  
+    },  
+    created_date: {  
+        type: Date,    
+        default: Date.now    
+    },  
+    workers: [Schema.Types.ObjectId]  // workeji, ki so v tej skupini  
+});  
 
 ### /groups
 GET  (JWT manger+):
