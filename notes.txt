@@ -6,3 +6,8 @@ https://medium.freecodecamp.org/securing-node-js-restful-apis-with-json-web-toke
 # Data generation
 https://github.com/stympy/faker
 mongoimport --db DBNAME --collection COLNAME --file FILE.json
+
+
+# lepi git graph
+git log --graph --pretty=oneline --abbrev-commit
+
