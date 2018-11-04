@@ -72,9 +72,7 @@ module.exports = function(app) {
 
     app.route('/groups/:groupId/workers')
         .get(verify.worker, groupController.read_all_workers_in_group)
-        .post(verify.manager, groupController.assign_user_to_group);
-
-    app.route('/groups/:groupId/workers/:userId')
+        .post(verify.manager, groupController.assign_user_to_group)
         .delete(verify.manager, groupController.remove_user_from_group);
 
     app.route('/groups/:groupId/tasks')

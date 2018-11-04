@@ -30,7 +30,7 @@ exports.delete_a_comment = function(req, res) {
 };
 
 exports.update_a_comment = function(req, res) {
-    Comment.findOneAndUpdate({_id: req.params.commentId}, req.body,  {new: true, runValidators: true }, function(err, comment) {
+    Comment.findOneAndUpdate({_id: req.params.commentId}, {content: req.body.content},  {new: true, runValidators: true }, function(err, comment) {
         if (err)
             res.send(err);
         res.json(comment);

@@ -46,7 +46,6 @@ exports.delete_a_group = function(req, res) {
     });
 };
 
-// grupe katerih sem manager TODO: test this
 exports.list_managed_groups = function(req, res) {
     Group.find({created_by: req.user._id}, function(err, groups) {
         if (err)
@@ -55,7 +54,6 @@ exports.list_managed_groups = function(req, res) {
     });
 };
 
-// grupe v katerih sem član TODO: test this
 exports.list_participating_groups = function(req, res) {
     Group.find({workers: req.user._id}, function(err, groups) {
         if (err)
@@ -76,7 +74,6 @@ exports.read_all_workers_in_group = function(req, res) {
     });
 };
 
-// TODO: test
 exports.assign_user_to_group = function(req, res) {
     Group.findOneAndUpdate({_id: req.params.groupId}, {$push: {workers: req.body.userId}}, {new: true}, function(err, group) {
         if (err)
@@ -85,7 +82,6 @@ exports.assign_user_to_group = function(req, res) {
     });
 };
 
-// TODO: test
 exports.remove_user_from_group = function(req, res) {
     Group.findOneAndUpdate({_id: req.params.groupId}, {$pull: {workers: req.body.userId}}, {new: true}, function(err, group) {
         if (err)
@@ -94,7 +90,6 @@ exports.remove_user_from_group = function(req, res) {
     });
 };
 
-// TODO: test
 exports.read_all_tasks_in_group = function(req, res) {
     Task.find({assigned_to_group: req.params.groupId}, function(err, tasks) {
         if (err)
