@@ -236,3 +236,21 @@ DELETE (JWT manager+)
 ### /groups/:groupId/tasks
 GET  (JWT worker+):
 * *Response*: array vseh Task objektov, ki so bili dodeljeni tej skupini (torej groupId je v Task.assigned_to_group)
+
+
+# V bazi na serveju že imate par zadev noter, in sicer:
+Imate 3 userje:
+username: admin, password: admin, privilege: admin  
+
+username: manager, password: manager, privilege: manager  
+
+username: worker, password: worker, privilege: worker  
+
+manager je vodja dveh skupin in je naredil nekaj nalog, ki jih je assignal worker-ju
+worker pa je v eni grupi in ima svoje taske
+
+Za svoje teste priporočam da preko /register route naredite par uporabnikov (enega managerja in enega userja najmanj)
+pol pa si shranite oba JWT, ki jih dobite kot odgovor.
+
+Pol ko kličeš route kot manager uporabiš manager JWT  
+ko kičeš route kot worker pa uporabi worker JWT
