@@ -15,7 +15,7 @@ exports.token = function(req, res, next) {
         if (err)
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
         // check if user exists
-        else User.findById(decoded.id, function(err, user) {
+        else User.findById(decoded.id, { password: 0 }, function(err, user) {
             if (err)
                 return res.send(err);
             // res.json(user);
@@ -42,7 +42,7 @@ exports.manager = function(req, res, next) {
         if (err)
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
         // check if user has manager privileges
-        else User.findById(decoded.id, function(err, user) {
+        else User.findById(decoded.id, { password: 0 }, function(err, user) {
             if (err)
                 return res.send(err);
             // res.json(user);
@@ -67,7 +67,7 @@ exports.admin = function(req, res, next) {
         if (err)
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
         // check if user has manager privileges
-        else User.findById(decoded.id, function(err, user) {
+        else User.findById(decoded.id, { password: 0 }, function(err, user) {
             if (err)
                 return res.send(err);
             // res.json(user);

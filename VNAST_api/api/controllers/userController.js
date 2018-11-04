@@ -22,14 +22,15 @@ exports.create_a_user = function(req, res) {
 
     new_user.save(function(err, user) {
         if (err) return res.status(500).send("There was a problem registering the user.")
-        // create a token
-        var token = jwt.sign({ id: user._id }, config.secret, {
-          expiresIn: 86400 // expires in 24 hours
-        });
-        res.json({ auth: true, token: token });
+        // // create a token
+        // var token = jwt.sign({ id: user._id }, config.secret, {
+        //   expiresIn: 86400 // expires in 24 hours
+        // });
+        // res.json({ auth: true, token: token });
+        // Tukaj ne loginamo tega userja (preko JWT kreacije), ker tukaj admin verjetno en mass kreira userje
+        res.json(user);
     });
 };
-
 
 exports.read_a_user = function(req, res) {
     User.find({_id: req.params.userId}, { password: 0 }, function(err, user) {
@@ -50,7 +51,6 @@ exports.update_a_user = function(req, res) {
         res.json(user);
     });
 };
-
 
 exports.delete_a_user = function(req, res) {
     User.deleteOne({_id: req.params.userId}, function(err, user) {

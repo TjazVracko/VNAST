@@ -22,7 +22,7 @@ var UserSchema = new Schema({
             }],
             default: ['worker']
     },
-    assigned_to_group:  Schema.Types.ObjectId
+    // assigned_to_groups:  [Schema.Types.ObjectId]  // user je lahko v več skupinah
 });
 
 module.exports = mongoose.model('Users', UserSchema);

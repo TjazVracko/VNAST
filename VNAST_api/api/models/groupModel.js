@@ -9,13 +9,14 @@ var GroupSchema = new Schema({
         required: 'Name the group'
     },
     created_by: {
-        type: String,
+        type: Schema.Types.ObjectId,  // to je manager, ki je naredil grupo
         required: 'Someone had to create this'  //Če ne pošljemo, kdo je ustvaril comment API vrne error
     },
     created_date: {
         type: Date,
         default: Date.now
-    }
+    },
+    workers: [Schema.Types.ObjectId]  // workeji, ki so v tej skupini
 });
 
 module.exports = mongoose.model('Groups', GroupSchema);

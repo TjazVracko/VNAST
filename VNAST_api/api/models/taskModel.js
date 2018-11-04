@@ -16,7 +16,7 @@ var TaskSchema = new Schema({
     },
     description: {
         type: String,
-        required: 'Enter the name of the task'
+        required: 'Enter the description of the task'
         },
     documents: [DocumentSchema],  //TODO: to je za future 3 tedne, tukaj samo kot placeholder
     priority: {
@@ -28,7 +28,7 @@ var TaskSchema = new Schema({
         default: Date.now
     },
     time_limit: {
-        type: Date
+        type: Date  // format je ISO Date (YYYY-MM-DDTHH:MM:SSZ, npr 2018-10-04T10:18:22.3Z)
     },
     status: {
         type: [{

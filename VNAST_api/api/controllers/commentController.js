@@ -28,3 +28,11 @@ exports.delete_a_comment = function(req, res) {
         res.json({ message: 'Comment successfully deleted' });
     });
 };
+
+exports.update_a_comment = function(req, res) {
+    Comment.findOneAndUpdate({_id: req.params.commentId}, req.body,  {new: true, runValidators: true }, function(err, comment) {
+        if (err)
+            res.send(err);
+        res.json(comment);
+    });
+};
