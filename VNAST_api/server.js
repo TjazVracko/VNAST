@@ -1,9 +1,11 @@
 var express = require('express'),
     app = express(),
-    port = process.env.PORT || 3000,
+    port = process.env.PORT || 27017,
     mongoose = require('mongoose'),
     Task = require('./api/models/taskModel'), //created model loading here
     User = require('./api/models/userModel'),
+    Comment = require('./api/models/commentModel'),
+    Group = require('./api/models/groupModel')
 
     bodyParser = require('body-parser'),
     config = require('./config');
