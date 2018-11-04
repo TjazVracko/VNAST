@@ -1,5 +1,5 @@
 module.exports = {
-    'mongoURL' : "mongodb://localhost:27017/YourDB",
+    'mongoURL' : "mongodb://127.0.0.1:27017/YourDB",
 
     'secret': 'zlahticjecar'
   };

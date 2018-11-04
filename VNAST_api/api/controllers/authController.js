@@ -27,7 +27,6 @@ exports.register_a_user =  function(req, res) {
     }); 
 };
 
-// TODO: projection nad passwordom nimamo več - to je slabo, naredi tak kot je blo prej
 exports.who_am_i = function(req, res) {
     // var token = req.headers['x-access-token'];
     // if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
@@ -55,7 +54,7 @@ exports.login_a_user = function(req, res) {
         expiresIn: 86400 // expires in 24 hours
       });
       res.json({ auth: true, token: token });
-    });
+    })
 };
 
 exports.logout_a_user = function(req, res) {

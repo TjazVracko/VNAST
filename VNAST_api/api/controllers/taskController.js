@@ -14,6 +14,7 @@ exports.list_all_tasks = function(req, res) {
 
 exports.create_a_task = function(req, res) {
     var new_task = new Task(req.body);
+    new_task.created_by = req.user._id;
     new_task.save(function(err, task) {
     if (err)
         res.send(err);
@@ -32,7 +33,7 @@ exports.read_a_task = function(req, res) {
 
 
 exports.update_a_task = function(req, res) {
-    Task.findOneAndUpdate({_id: req.params.taskId}, req.body, {new: true}, function(err, task) {
+    Task.findOneAndUpdate({_id: req.params.taskId}, req.body,  {new: true, runValidators: true }, function(err, task) {
     if (err)
         res.send(err);
     res.json(task);
@@ -45,5 +46,21 @@ exports.delete_a_task = function(req, res) {
         if (err)
             res.send(err);
         res.json({ message: 'Task successfully deleted' });
+    });
+};
+
+exports.read_my_tasks = function(req, res) {
+    Task.find({assigned_to_worker: req.user._id}, function(err, tasks) {
+        if (err)
+            res.send(err);
+        res.json(tasks);
+    });
+};
+
+exports.read_managed_tasks = function(req, res) {
+    Task.find({created_by: req.user._id}, function(err, tasks) {
+        if (err)
+            res.send(err);
+        res.json(tasks);
     });
 };

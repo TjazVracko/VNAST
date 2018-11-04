@@ -21,7 +21,8 @@ var UserSchema = new Schema({
             enum: ['worker', 'manager', 'admin']
             }],
             default: ['worker']
-    }
+    },
+    // assigned_to_groups:  [Schema.Types.ObjectId]  // user je lahko v več skupinah
 });
 
 module.exports = mongoose.model('Users', UserSchema);
