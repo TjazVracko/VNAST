@@ -54,7 +54,7 @@ exports.login_a_user = function(req, res) {
         expiresIn: 86400 // expires in 24 hours
       });
       res.json({ auth: true, token: token });
-    });
+    })
 };
 
 exports.logout_a_user = function(req, res) {

@@ -1,5 +1,7 @@
 'use strict';
-
+var bcrypt = require('bcryptjs');
+var config = require('../../config');  
+var jwt = require('jsonwebtoken');
 
 var mongoose = require('mongoose'),
     User = mongoose.model('Users');
@@ -13,34 +15,42 @@ exports.list_all_users = function(req, res) {
     });
 };
 
-//TODO: hash password
 exports.create_a_user = function(req, res) {
-    var new_user = new User(req.body);
+    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+
+    var new_user = new User({username: req.body.username, email: req.body.email, password: hashedPassword, privilege: req.body.privilege});
+
     new_user.save(function(err, user) {
-        if (err)
-            res.send(err);
+        if (err) return res.status(500).send("There was a problem registering the user.")
+        // // create a token
+        // var token = jwt.sign({ id: user._id }, config.secret, {
+        //   expiresIn: 86400 // expires in 24 hours
+        // });
+        // res.json({ auth: true, token: token });
+        // Tukaj ne loginamo tega userja (preko JWT kreacije), ker tukaj admin verjetno en mass kreira userje
         res.json(user);
     });
 };
-
 
 exports.read_a_user = function(req, res) {
-    User.findById(req.params.userId, { password: 0 }, function(err, user) {
+    User.find({_id: req.params.userId}, { password: 0 }, function(err, user) {
         if (err)
             res.send(err);
         res.json(user);
     });
 };
 
-// TODO: hash password
 exports.update_a_user = function(req, res) {
-    User.findOneAndUpdate({_id: req.params.userId}, req.body, {new: true, runValidators: true }, function(err, user) {
+    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+
+    var new_user = req.body;
+    new_user.password = hashedPassword;
+    User.findOneAndUpdate({_id: req.params.userId}, new_user, {new: true, runValidators: true }, function(err, user) {
         if (err)
             res.send(err);
         res.json(user);
     });
 };
-
 
 exports.delete_a_user = function(req, res) {
     User.deleteOne({_id: req.params.userId}, function(err, user) {
