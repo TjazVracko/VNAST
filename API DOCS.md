@@ -254,3 +254,17 @@ pol pa si shranite oba JWT, ki jih dobite kot odgovor.
 
 Pol ko kličeš route kot manager uporabiš manager JWT  
 ko kičeš route kot worker pa uporabi worker JWT
+
+# Uporaba
+Torej api zna parsat tako JSON string kot tudi x-www-form-urlencoded string  
+
+pomemno je vglavnem to,da v header daš  
+(key: "x-access-token", value: "thetoken")  
+ - to ma .NET menda kot dictonary nareto  
+
+v bodyju ( pa laho maš JSON, torej  
+{ "username" : "admin", "password": "admin"}  
+naprimer  
+ali pa x-www-form-urlencoded, ki je  
+"username=admin&password=admin"  
+(enako kot url query string)  
