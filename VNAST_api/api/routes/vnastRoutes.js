@@ -23,14 +23,6 @@ module.exports = function(app) {
         .get(verify.worker, userController.read_a_user)
         .put(verify.admin, userController.update_a_user)  // admin only
         .delete(verify.admin, userController.delete_a_user);  // admin only
-
-<<<<<<< HEAD
-    //comments
-    app.route('/comments/:taskId')
-        .get(verify.worker, commentController.list_all_comments)
-        .post(verify.worker, commentController.create_a_comment)
-        .delete(verify.worker, commentController.delete_a_comment);
-=======
     // Tasks 
     app.route('/tasks')
         .get(verify.worker, taskController.list_all_tasks)
@@ -58,7 +50,6 @@ module.exports = function(app) {
     app.route('/tasks/:taskId/comments/:commentId')
         .delete(verify.worker, commentController.delete_a_comment)
         .put(verify.worker, commentController.update_a_comment);
->>>>>>> 0a46f2ca1f165f99ecd99b3febf6054ce0b50d50
 
     // Groups
     app.route('/groups')
