@@ -35,10 +35,10 @@ module.exports = function(app) {
         .put(verify.admin, userController.update_a_user)  // admin only
         .delete(verify.admin, userController.delete_a_user);  // admin only
 
-    //okej route?
+    //comments
     app.route('/comments/:taskId')
         .get(verify.worker, commentController.list_all_comments)
-        .post(verify.worker, commentController.create_a_comment)   //kako pošljemo who_am_i kot parameter?
+        .post(verify.worker, commentController.create_a_comment)
         .delete(verify.worker, commentController.delete_a_comment);
 
     //groups
