@@ -41,7 +41,7 @@ exports.who_am_i = function(req, res) {
     //     res.json(user);
     //     });
     // });
-    res.json(req.user._id);
+    res.json(req.user);
 };
 
 exports.login_a_user = function(req, res) {
