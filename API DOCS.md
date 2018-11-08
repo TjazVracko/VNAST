@@ -73,6 +73,7 @@ Opomba: passwordi so hashani - ko pa ti kličeš api in dobiš User objekt nazaj
 ### /users
 GET  (JWT worker+):
 * *Response*: array user objektov
+
 POST  (JWT admin+):
 * *required*: username, password, 
 * *optional*: privilege, email
@@ -81,9 +82,11 @@ POST  (JWT admin+):
 ### /users/:userId
 GET (JWT worker+):
 * *Response*: pripadajoč User object
+
 PUT (JWT admin+):
 * *optional*: username, password, privilege, email
 * *Response*: User object posodobljenega userja
+
 DELETE (JWT admin+)
 * *Response*: Error ali { message: 'User successfully deleted' }
 
@@ -125,6 +128,7 @@ var TaskSchema = new Schema({
 ### /tasks
 GET  (JWT worker+):
 * *Response*: array Task objektov (vseh v bazi)
+
 POST  (JWT manager+):
 * *required*: name, description
 * *optional*: priority, created_date, time_limit, status, assigned_to_worker, assigned_to_group
@@ -133,9 +137,11 @@ POST  (JWT manager+):
 ### /tasks/:taskId
 GET (JWT worker+):
 * *Response*: pripadajoč Task object
+
 PUT (JWT worker+):
 * *optional*: created_by, name, description, priority,created_date, time_limit, status, assigned_to_worker, assigned_to_group
 * *Response*: Task object posodobljene naloge
+
 DELETE (JWT manager+)
 * *Response*: Error ali { message: 'Task successfully deleted' }
 
@@ -168,6 +174,7 @@ var CommentSchema = new Schema({
 ### /tasks/:taskId/comments
 GET  (JWT worker+):
 * *Response*: array Comment objektov, ki pripadaju temu Tasku
+
 POST  (JWT worker+):
 * *required*: content
 * *optional*: created_date
@@ -177,6 +184,7 @@ POST  (JWT worker+):
 PUT (JWT worker+):
 * *optional*: content
 * *Response*: Comment object posodobljenege komentarja
+
 DELETE (JWT worker+)
 * *Response*: Error ali { message: 'Comment successfully deleted' }
 
@@ -201,6 +209,7 @@ var GroupSchema = new Schema({
 ### /groups
 GET  (JWT manger+):
 * *Response*: array vseh Group objektov
+
 POST  (JWT manger+):
 * *required*: name
 * *optional*: created_date
@@ -217,18 +226,22 @@ GET  (JWT worker+):
 ### /groups/:groupId
 GET (JWT worker+):
 * *Response*: pripadajoč Group object
+
 PUT (JWT manger+):
 * *optional*: name, created_by, created_date, workers
 * *Response*: Group object posodobljene skupine
+
 DELETE (JWT manager+)
 * *Response*: Error ali { message: 'Group successfully deleted' }
 
 ### /groups/:groupId/workers
 GET (JWT worker+):
 * *Response*: array User objektov, ki so workerji v tej skupini
+
 POST  (JWT manger+):
 * *required*: userId (id workerja, ki ga želimo dodati v skupino)
 * *Response*: Group objekt posodobljene skupine (workers array ima dodanega workerja)
+
 DELETE (JWT manager+)
 * *required*: userId (id workerja, ki ga želimo odstraniti iz skupine)
 * *Response*: Group objekt posodobljene skupine (workers array ima odstranjenega workerja)
