@@ -23,7 +23,6 @@ module.exports = function(app) {
         .get(verify.worker, userController.read_a_user)
         .put(verify.admin, userController.update_a_user)  // admin only
         .delete(verify.admin, userController.delete_a_user);  // admin only
-
     // Tasks 
     app.route('/tasks')
         .get(verify.worker, taskController.list_all_tasks)

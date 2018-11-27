@@ -41,11 +41,15 @@ exports.read_a_user = function(req, res) {
 };
 
 exports.update_a_user = function(req, res) {
-    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
     var new_user = req.body;
+
+    if (req.body.password !== undefined) {
+    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+
     new_user.password = hashedPassword;
-    User.findOneAndUpdate({_id: req.params.userId}, new_user, {new: true, runValidators: true }, function(err, user) {
+    }
+    User.findOneAndUpdate({_id: req.params.userId}, new_user, {new: true, runValidators: true, fields: {password: 0} }, function(err, user) {
         if (err)
             res.send(err);
         res.json(user);
