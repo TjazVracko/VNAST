@@ -5,7 +5,7 @@ module.exports = function(app) {
     var authController = require('../controllers/authController');
     var commentController = require('../controllers/commentController');
     var groupController = require('../controllers/groupController');
-
+    
     var verify = require('./verifyToken');
     
     // Authentication
@@ -38,7 +38,7 @@ module.exports = function(app) {
     app.route('/tasks/get/mytasks')
         .get(verify.worker, taskController.read_my_tasks);
 
-    // tasko prijavljenega managerja
+    // taski prijavljenega managerja
     app.route('/tasks/get/managedtasks')
         .get(verify.manager, taskController.read_managed_tasks);
 
