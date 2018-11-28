@@ -2,7 +2,8 @@
 
 
 var mongoose = require('mongoose'),
-    Task = mongoose.model('Tasks');
+    Task = mongoose.model('Tasks'),
+    Document = mongoose.model('Documents');
 
 exports.list_all_tasks = function(req, res) {
     Task.find({}, function(err, task) {
@@ -62,5 +63,79 @@ exports.read_managed_tasks = function(req, res) {
         if (err)
             res.send(err);
         res.json(tasks);
+    });
+};
+
+
+// FILES: 
+
+exports.upload_files = function(req, res) {
+    var docArr = []
+    req.files.forEach(file => {
+        // append to arr
+        var doc = new Document({mimetype: file.mimetype, originalname: file.originalname, filename: file.filename, path: file.path})
+        docArr.push(doc);
+    });
+
+    Task.findOneAndUpdate({_id: req.params.taskId}, {$push: {documents: docArr}}, {new: true}, function(err, task) {
+        if (err)
+            res.send(err);
+        res.json(task);
+    });
+
+};
+
+// to download files use this
+const path = require('path');
+
+exports.download_a_file = function(req, res) {
+    Task.findById(req.params.taskId, function(err, task) {
+        if (err)
+            res.send(err);
+        else {
+            // read files
+            var file = task.documents.filter(f => f._id == req.params.fileId)[0];
+            if(typeof(file) !== 'undefined')
+                res.download(path.resolve(file.path), file.originalname);
+            else
+                res.send({message: 'File does not exist'})
+        }
+    });
+
+};
+
+const fs = require('fs');
+exports.delete_a_file = function(req, res) {
+    // get file path
+    Task.findById(req.params.taskId, function(err, task) {
+        if (err)
+            res.send(err);
+        else {
+            var file = task.documents.filter(f => f._id == req.params.fileId)[0];
+            console.log(file);
+            if(typeof(file) !== 'undefined'){
+                 // remove file from system
+                fs.unlink(path.resolve(file.path), (err) => {
+                    if (err) 
+                        console.log(err);
+                    else{
+                        console.log(file.filename + ' was deleted');
+
+                        // update DB entry
+                        Task.findOneAndUpdate({_id: req.params.taskId}, {$pull: {documents:{_id: req.params.fileId}}}, {new: true}, function(err, group) {
+                            if (err)
+                                res.send(err);
+                            else{
+                                res.json({message: file.originalname + ' was deleted'});
+                            }
+                        });
+                    }
+                    
+                });
+            } else {
+                res.send({message: 'File does not exist'})
+            }
+           
+        }
     });
 };

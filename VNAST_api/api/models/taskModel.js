@@ -2,10 +2,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-//Document - TODO: to je za future 3 tedne
 var DocumentSchema = new Schema({
-    contentType: String, // npr image/png al pa application/pdf (glej mime types - https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types)
-    data: Buffer
+    mimetype: String, // npr image/png al pa application/pdf
+    originalname: String,  // file name before upload
+    filename: String,    // file name in the system (neki IDji, da so vsi fajli unique)
+    path: String    // full file path
 });
 
 // Naloga
@@ -19,7 +20,7 @@ var TaskSchema = new Schema({
         type: String,
         required: 'Enter the description of the task'
         },
-    documents: [DocumentSchema],  //TODO: to je za future 3 tedne, tukaj samo kot placeholder
+    documents: [DocumentSchema],
     priority: {
         type: String,
         enum: ['1', '2', '3', '4', '5'],
@@ -44,3 +45,4 @@ var TaskSchema = new Schema({
 });
 
 module.exports = mongoose.model('Tasks', TaskSchema);
+module.exports = mongoose.model('Documents', DocumentSchema);
