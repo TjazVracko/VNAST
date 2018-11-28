@@ -9,7 +9,7 @@ var ChatContainerSchema = new Schema({
         default: Date.now
     },
     participants: [Schema.Types.ObjectId],
-    messages: [Schema.Types.ObjectId]  // workeji, ki so v tej skupini
+    messages: [Schema.Types.ObjectId] 
 });
 
 module.exports = mongoose.model('ChatContainers', ChatContainerSchema);

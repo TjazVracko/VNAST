@@ -145,6 +145,10 @@ PUT (JWT worker+):
 DELETE (JWT manager+)
 * *Response*: Error ali { message: 'Task successfully deleted' }
 
+POST (JWT manager+)
+* *required*: id uporabnika, ki mu želimo dodeliti task
+* *Response* Task object posodobljene naloge
+
 ### /tasks/get/mytasks
 GET (JWT worker+):
 * *Response*: array Task obejktov, ki so bili dodeljeni temu workerju (njegov id je v assigned_to_worker)
@@ -266,6 +270,47 @@ DELETE (JWT manager+)
 GET  (JWT worker+):
 * *Response*: array vseh Task objektov, ki so bili dodeljeni tej skupini (torej groupId je v Task.assigned_to_group)
 
+POST (JWT manager+):
+* *required*: taskId, ki ga želimo dodeliti skupini
+* *Response*: Group objekt posodobljene skupine
+
+DELETE (JWT manager+):
+* *required*: taskId, ki ga želimo odstraniti iz skupine
+* *Response*: Group objekt posodobljene skupine
+
+## Chats
+Chat model:
+var ChatContainerSchema = new Schema({
+    created_date: {
+        type: Date,
+        default: Date.now
+    },
+    participants: [Schema.Types.ObjectId],
+    messages: [Schema.Types.ObjectId] 
+});
+
+## /chats
+GET (JWT manager+):
+* *Response*: array vseh chatov
+
+POST (JWT worker+):
+* *required*: userId s katerim ustvarimo chat
+* *Response*: chat objekt
+
+# /chats/get/memberin
+GET (JWT worker+):
+* *Response*: array vseh chatov v katerih je uporabnik
+
+# /chats/:chatId
+GET (JWT worker+):
+* *Response*: array vseh sporočil v chatu
+
+POST (JWT worker+):
+* *required*: content: vsebina sporočila, ki ga želimo poslati
+* *Response*: posodobljen chat objekt
+
+DELETE (JWT worker+):
+* *Response*: error ali { message: 'Chat successfully deleted' }
 
 # V bazi na serveju že imate par zadev noter, in sicer:
 Imate 3 userje:

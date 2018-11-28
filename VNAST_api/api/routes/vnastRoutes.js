@@ -94,14 +94,14 @@ module.exports = function(app) {
 
     app.route('/chats')
         .get(verify.manager, chatController.list_all_chats)
-        .post(verify.manager, chatController.create_a_chat);
+        .post(verify.worker, chatController.create_a_chat);
     
     app.route('/chats/get/memberin')
         .get(verify.worker, chatController.list_participating_chats);
 
     app.route('/chats/:chatId')
         .get(verify.worker, chatController.list_all_messages)
-        .delete(verify.worker, chatController.delete_a_chat)
-        .put(verify.worker, chatController.add_message);
+        .post(verify.worker, chatController.add_message)
+        .delete(verify.worker, chatController.delete_a_chat);
 
 };
