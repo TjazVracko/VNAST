@@ -1,3 +1,5 @@
-/VNAST_api/node_modules
-/VNAST_api/uploads
-/node_modules
+VNAST_api/node_modules
+VNAST_api/uploads
+node_modules
+VNAST_api/package-lock.json
+package-lock.json
