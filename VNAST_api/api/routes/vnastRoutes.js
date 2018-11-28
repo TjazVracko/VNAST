@@ -5,7 +5,8 @@ module.exports = function(app) {
     var authController = require('../controllers/authController');
     var commentController = require('../controllers/commentController');
     var groupController = require('../controllers/groupController');
-    
+    var chatController = require('../controllers/chatController');
+
     var verify = require('./verifyToken');
     var multer  = require('multer')
     var upload = multer({ dest: 'uploads/' });
@@ -88,5 +89,16 @@ module.exports = function(app) {
     app.route('/groups/:groupId/tasks')
         .get(verify.worker, groupController.read_all_tasks_in_group);
         
+    app.route('/chats')
+        .get(verify.manager, chatController.list_all_chats)
+        .post(verify.manager, chatController.create_a_chat);
+    
+    app.route('/chats/get/memberin')
+        .get(verify.worker, chatController.list_participating_chats);
+
+    app.route('/chats/:chatId')
+        .get(verify.worker, chatController.list_all_messages)
+        .delete(verify.worker, chatController.delete_a_chat)
+        .put(verify.worker, chatController.add_message);
 
 };

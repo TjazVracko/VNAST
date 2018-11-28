@@ -6,7 +6,9 @@ var express = require('express'),
     Task = require('./api/models/taskModel'), //created model loading here
     User = require('./api/models/userModel'),
     Comment = require('./api/models/commentModel'),
-    Group = require('./api/models/groupModel')
+    Group = require('./api/models/groupModel'),
+    ChatContainer = require('./api/models/chatContainerModel'),
+    Message = require('./api/models/messageModel')
 
     bodyParser = require('body-parser'),
     config = require('./config');
