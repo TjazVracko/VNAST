@@ -66,7 +66,6 @@ exports.read_managed_tasks = function(req, res) {
     });
 };
 
-
 // FILES: 
 
 exports.upload_files = function(req, res) {
