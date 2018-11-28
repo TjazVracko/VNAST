@@ -8,6 +8,8 @@ module.exports = function(app) {
     var chatController = require('../controllers/chatController');
 
     var verify = require('./verifyToken');
+    var multer  = require('multer')
+    var upload = multer({ dest: 'uploads/' });
     
     // Authentication
     app.post('/register', authController.register_a_user);
@@ -33,12 +35,21 @@ module.exports = function(app) {
         .get(verify.worker, taskController.read_a_task)
         .put(verify.worker, taskController.update_a_task)  // če je tak lahko worker vse spreminja, namesto da bi lahko spremenil samo status, ampak naj bo
         .delete(verify.manager, taskController.delete_a_task);
+
+    
+    app.route('/tasks/:taskId/files')
+        .post(verify.manager, upload.any(), taskController.upload_files); // fajli so v req.files
+
+    app.route('/tasks/:taskId/files/:fileId')
+        .get(verify.worker, taskController.download_a_file)
+        .delete(verify.manager, taskController.delete_a_file);
+    // https://github.com/expressjs/multer
     
     // taski prijavljenega workerja
     app.route('/tasks/get/mytasks')
         .get(verify.worker, taskController.read_my_tasks);
 
-    // tasko prijavljenega managerja
+    // taski prijavljenega managerja
     app.route('/tasks/get/managedtasks')
         .get(verify.manager, taskController.read_managed_tasks);
 

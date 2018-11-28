@@ -9,3 +9,13 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
 # Data generation
 https://github.com/stympy/faker
 mongoimport --db DBNAME --collection COLNAME --file FILE.json
+
+
+# lepi git graph
+git log --graph --pretty=oneline --abbrev-commit
+
+
+
+# express data validator
+https://github.com/express-validator/express-validator
+

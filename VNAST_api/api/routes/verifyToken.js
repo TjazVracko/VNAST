@@ -1,6 +1,7 @@
 var jwt = require('jsonwebtoken');
 var config = require('../../config');
 
+var tokenName = 'VNASTtoken';
 
 var mongoose = require('mongoose'),
     User = mongoose.model('Users');
