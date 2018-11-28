@@ -10,9 +10,11 @@ module.exports = function(app) {
     var verify = require('./verifyToken');
     var multer  = require('multer')
     var upload = multer({ dest: 'uploads/' });
+
+    var validate = require('./validation');
     
     // Authentication
-    app.post('/register', authController.register_a_user);
+    app.post('/register', validate.register, authController.register_a_user);
     app.get('/me', verify.token, authController.who_am_i);
     app.post('/login', authController.login_a_user);
     app.get('/logout', authController.logout_a_user); //nepotrebno, a tukaj kot prikaz logike - za logout enostavno zbrišemo token client-side (po 24h pa itak treba ponovni login ker token expire-a)
@@ -20,11 +22,11 @@ module.exports = function(app) {
     // Users
     app.route('/users')
         .get(verify.worker, userController.list_all_users)
-        .post(verify.admin, userController.create_a_user);  // samo admin lahko tukaj kreira userje, drugače imamo registracio (glej zgoraj)
+        .post(verify.admin, validate.register, userController.create_a_user);  // samo admin lahko tukaj kreira userje, drugače imamo registracio (glej zgoraj)
 
     app.route('/users/:userId')
         .get(verify.worker, userController.read_a_user)
-        .put(verify.admin, userController.update_a_user)  // admin only
+        .put(verify.admin, validate.userupdate, userController.update_a_user)  // admin only
         .delete(verify.admin, userController.delete_a_user);  // admin only
     // Tasks 
     app.route('/tasks')

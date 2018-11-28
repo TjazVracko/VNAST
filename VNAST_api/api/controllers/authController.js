@@ -7,24 +7,31 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 var config = require('../../config');    
 
+const { validationResult } = require('express-validator/check');
 
 exports.register_a_user =  function(req, res) {
-    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
-    
-    User.create({
-      username : req.body.username,
-      email : req.body.email,
-      password : hashedPassword,
-      privilege : req.body.privilege
-    },
-    function (err, user) {
-      if (err) return res.status(500).send("There was a problem registering the user.")
-      // create a token
-      var token = jwt.sign({ id: user._id }, config.secret, {
-        expiresIn: 86400 // expires in 24 hours
-      });
-      res.json({ auth: true, token: token });
-    }); 
+  const errors = validationResult(req);
+  // console.log(errors.mapped());
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+  
+  User.create({
+    username : req.body.username,
+    email : req.body.email,
+    password : hashedPassword,
+    privilege : req.body.privilege
+  },
+  function (err, user) {
+    if (err) return res.status(500).send("There was a problem registering the user.")
+    // create a token
+    var token = jwt.sign({ id: user._id }, config.secret, {
+      expiresIn: 86400 // expires in 24 hours
+    });
+    res.json({ auth: true, token: token });
+  }); 
 };
 
 exports.who_am_i = function(req, res) {
