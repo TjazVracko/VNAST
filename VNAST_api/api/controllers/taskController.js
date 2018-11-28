@@ -66,14 +66,6 @@ exports.read_managed_tasks = function(req, res) {
     });
 };
 
-exports.assign_task_to_user = function(req, res) {
-    Task.findOneAndUpdate({_id: req.params.taskId}, {assigned_to_worker: req.body.userId},  {new: true, runValidators: true }, function(err, task) {
-        if (err)
-            res.send(err);
-        res.json(task);
-        });
-}
-
 // FILES: 
 
 exports.upload_files = function(req, res) {

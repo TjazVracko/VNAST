@@ -145,10 +145,6 @@ PUT (JWT worker+):
 DELETE (JWT manager+)
 * *Response*: Error ali { message: 'Task successfully deleted' }
 
-POST (JWT manager+)
-* *required*: id uporabnika, ki mu želimo dodeliti task
-* *Response* Task object posodobljene naloge
-
 ### /tasks/get/mytasks
 GET (JWT worker+):
 * *Response*: array Task obejktov, ki so bili dodeljeni temu workerju (njegov id je v assigned_to_worker)
@@ -269,14 +265,6 @@ DELETE (JWT manager+)
 ### /groups/:groupId/tasks
 GET  (JWT worker+):
 * *Response*: array vseh Task objektov, ki so bili dodeljeni tej skupini (torej groupId je v Task.assigned_to_group)
-
-POST (JWT manager+):
-* *required*: taskId, ki ga želimo dodeliti skupini
-* *Response*: Group objekt posodobljene skupine
-
-DELETE (JWT manager+):
-* *required*: taskId, ki ga želimo odstraniti iz skupine
-* *Response*: Group objekt posodobljene skupine
 
 ## Chats
 Chat model:

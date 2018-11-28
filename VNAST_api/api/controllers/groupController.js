@@ -97,19 +97,3 @@ exports.read_all_tasks_in_group = function(req, res) {
         res.json(tasks);
     });
 };
-
-exports.assign_task_to_group = function(req, res) {
-    Group.findOneAndUpdate({_id: req.params.groupId}, {$push: {tasks: req.body.taskId}}, {new: true}, function(err, group) {
-        if (err)
-            res.send(err);
-        res.json(group);
-    });
-};
-
-exports.remove_task_from_group = function(req, res) {
-    Group.findOneAndUpdate({_id: req.params.groupId}, {$pull: {tasks: req.body.taskId}}, {new: true}, function(err, group) {
-        if (err)
-            res.send(err);
-        res.json(group);
-    });
-};
