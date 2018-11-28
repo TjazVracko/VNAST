@@ -41,7 +41,7 @@ var TaskSchema = new Schema({
         default: ['pending']
     },
     assigned_to_worker: Schema.Types.ObjectId,
-    assigned_to_group:  Schema.Types.ObjectId
+    //assigned_to_group:  Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('Tasks', TaskSchema);

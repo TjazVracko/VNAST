@@ -33,6 +33,7 @@ module.exports = function(app) {
 
     app.route('/tasks/:taskId')
         .get(verify.worker, taskController.read_a_task)
+        .post(verify.manager, taskController.assign_task_to_user)
         .put(verify.worker, taskController.update_a_task)  // če je tak lahko worker vse spreminja, namesto da bi lahko spremenil samo status, ampak naj bo
         .delete(verify.manager, taskController.delete_a_task);
 
@@ -87,8 +88,10 @@ module.exports = function(app) {
         .delete(verify.manager, groupController.remove_user_from_group);
 
     app.route('/groups/:groupId/tasks')
-        .get(verify.worker, groupController.read_all_tasks_in_group);
-        
+        .get(verify.worker, groupController.read_all_tasks_in_group)
+        .post(verify.manager, groupController.assign_task_to_group)
+        .delete(verify.manager, groupController.remove_task_from_group);
+
     app.route('/chats')
         .get(verify.manager, chatController.list_all_chats)
         .post(verify.manager, chatController.create_a_chat);

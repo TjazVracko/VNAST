@@ -16,7 +16,8 @@ var GroupSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    workers: [Schema.Types.ObjectId]  // workeji, ki so v tej skupini
+    workers: [Schema.Types.ObjectId],  // workeji, ki so v tej skupini
+    tasks: [Schema.Types.ObjectId]
 });
 
 module.exports = mongoose.model('Groups', GroupSchema);
