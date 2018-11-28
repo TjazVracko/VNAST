@@ -279,11 +279,11 @@ var ChatContainerSchema = new Schema({
 
 ## /chats
 GET (JWT manager+):
-* *Response*: array vseh chatov
+* *Response*: array vseh chatov (lahko je prazen)
 
 POST (JWT worker+):
 * *required*: userId s katerim ustvarimo chat
-* *Response*: chat objekt
+* *Response*: chat objekt s sodelujočim
 
 # /chats/get/memberin
 GET (JWT worker+):
@@ -291,14 +291,32 @@ GET (JWT worker+):
 
 # /chats/:chatId
 GET (JWT worker+):
-* *Response*: array vseh sporočil v chatu
+* *Response*: array vseh sporočil v chatu ali error ali {message: 'Chat does not exist!'}
 
 POST (JWT worker+):
 * *required*: content: vsebina sporočila, ki ga želimo poslati
 * *Response*: posodobljen chat objekt
 
 DELETE (JWT worker+):
-* *Response*: error ali { message: 'Chat successfully deleted' }
+* *Response*: error ali {message: 'Chat successfully deleted'}
+
+# /groups/:groupId/chats
+GET (JWT worker+)
+* *Response*: array vseh chatov (lahko je prazen)
+
+POST (JWT manager+)
+* *Response*: chat objekt z vsemi sodelujočimi
+
+# /groups/:groupId/chats/:chatId
+GET (JWT worker+)
+* *Response*: array vseh sporočil v chatu ali error ali {message: 'Chat does not exist!'}
+
+POST (JWT worker+)
+* *required*: content: vsebina sporočila, ki ga želimo poslati
+* *Response*: posodobljen chat objekt ali error
+
+DELETE (JWT manager+)
+* *Response*: error ali {message: 'Chat successfully deleted'}
 
 # V bazi na serveju že imate par zadev noter, in sicer:
 Imate 3 userje:
