@@ -153,6 +153,22 @@ GET (JWT worker+):
 GET (JWT manager+):
 * *Response*: array Task obejktov, ki jih je kreiral ta manager (njegov id je v created_by)
 
+## Nalaganje datotek
+Vsak task ima array dokumentov (naloženih datotek, v stilu priponk)
+
+### /tasks/:taskId/files
+POST (JWT manager+):
+* *NOTE*: za uploadanje sem jaz v postmanu dal "form-data" (namesto raw ali x-www-form-encoded), ker le tak lahko file selectaš. pol pa key je lahko karkoli, zraven pa file
+* *required*: en ali več parov key: file (key je lahko karkoli)
+* *Response*: Error ali nov task objekt z dodanimi documenti v arrayu
+### /tasks/:taskId/files/:fileId
+GET (JWT worker+):
+* *Response*: {message: 'File does not exist'} ali pa File download as attachment
+
+DELETE (JWT manager+)
+* *Response*: Error, {message: 'File does not exist'}, ali pa {message: FILENAME + ' was deleted'}
+
+
 ## Comments
 Objekt komentarja:  
 var CommentSchema = new Schema({  
