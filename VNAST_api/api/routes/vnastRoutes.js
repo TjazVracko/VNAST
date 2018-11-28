@@ -101,4 +101,12 @@ module.exports = function(app) {
         .post(verify.worker, chatController.add_message)
         .delete(verify.worker, chatController.delete_a_chat);
 
+    app.route('/groups/:groupId/chats')
+        .get(verify.worker, chatController.list_group_chats)
+        .post(verify.manager, chatController.create_group_chat);
+
+    app.route('/groups/:groupId/chats/:chatId')
+        .get(verify.worker, chatController.list_all_messages)
+        .post(verify.worker, chatController.add_message)
+        .delete(verify.manager, chatController.delete_a_chat);
 };

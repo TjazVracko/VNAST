@@ -1,7 +1,8 @@
 'use strict';
 var mongoose = require('mongoose'),
     Message = mongoose.model('Messages'),
-    ChatContainer = mongoose.model('ChatContainers');
+    ChatContainer = mongoose.model('ChatContainers'),
+    Group = mongoose.model('Groups');
 
 exports.list_all_chats = function(req, res) {
     ChatContainer.find({}, function(err, chats) {
@@ -34,12 +35,19 @@ exports.create_a_chat = function(req, res) {
     });
 };
 
-//vsak udeleženec lahko izbriše chat
 exports.delete_a_chat = function(req, res) {
-    ChatContainer.deleteOne({_id: req.params.chatId}, function(err, chat) {
+    ChatContainer.find({_id: req.params.chatId}, function(err, chat) {
         if (err)
             res.send(err);
-        res.json({ message: 'Chat successfully deleted' });
+        Message.deleteMany({_id: {$in: chat[0].messages}}, function(err, messages) {
+            if (err)
+                res.send(err);
+            ChatContainer.findOneAndDelete({_id: req.params.chatId}, function(err, chat) {
+                if (err)
+                    res.send(err);
+                res.json({ message: 'Chat successfully deleted' });
+            })
+        });
     });
 };
 
@@ -63,7 +71,7 @@ exports.add_message = function(req, res) {
         res.json(chat);
         });
     });
-}
+};
 
 /*
 //pomoč
@@ -91,4 +99,29 @@ exports.list_all_messages = function(req, res) {
             res.json(messages);
         });
     });
-}
+};
+
+exports.create_group_chat = function(req, res) {
+    Group.find({_id: req.params.groupId}, function(err, group) {
+        if (err)
+            res.send(err);
+        var new_chat = new ChatContainer();
+        new_chat.participants = group[0].workers;
+        new_chat.assigned_to_group = group[0]._id;
+        new_chat.save(function(err, chat) {
+            if (err)
+                res.send(err);
+            res.json(chat);
+        });
+    });
+
+
+};
+
+exports.list_group_chats = function(req, res) {
+    ChatContainer.find({assigned_to_group: req.params.groupId}, function(err, chats) {
+        if (err)
+            res.send(err);
+        res.json(chats);
+    });
+};

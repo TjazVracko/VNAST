@@ -9,7 +9,8 @@ var ChatContainerSchema = new Schema({
         default: Date.now
     },
     participants: [Schema.Types.ObjectId],
-    messages: [Schema.Types.ObjectId] 
+    messages: [Schema.Types.ObjectId],
+    assigned_to_group: Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('ChatContainers', ChatContainerSchema);
