@@ -55,7 +55,7 @@ exports.update_a_user = function(req, res) {
     var new_user = req.body;
 
     if (req.body.password !== undefined) {
-    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+      var hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
     new_user.password = hashedPassword;
     }

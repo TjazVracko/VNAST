@@ -31,11 +31,11 @@ module.exports = function(app) {
     // Tasks 
     app.route('/tasks')
         .get(verify.worker, taskController.list_all_tasks)
-        .post(verify.manager, taskController.create_a_task);  // <- poglej, uprabljamo middleware funkcijo za verifikacijo privilegijev
+        .post(verify.manager, validate.createtask, taskController.create_a_task);  // <- poglej, uprabljamo middleware funkcijo za verifikacijo privilegijev
 
     app.route('/tasks/:taskId')
         .get(verify.worker, taskController.read_a_task)
-        .put(verify.worker, taskController.update_a_task)  // če je tak lahko worker vse spreminja, namesto da bi lahko spremenil samo status, ampak naj bo
+        .put(verify.worker, validate.updatetask, taskController.update_a_task)  // če je tak lahko worker vse spreminja, namesto da bi lahko spremenil samo status, ampak naj bo
         .delete(verify.manager, taskController.delete_a_task);
 
     
@@ -59,7 +59,7 @@ module.exports = function(app) {
     app.route('/tasks/:taskId/comments')
     // app.route('/comments/:taskId')
         .get(verify.worker, commentController.list_all_comments)
-        .post(verify.worker, commentController.create_a_comment);
+        .post(verify.worker, validate.comment, commentController.create_a_comment);
 
     app.route('/tasks/:taskId/comments/:commentId')
         .delete(verify.worker, commentController.delete_a_comment)
@@ -68,7 +68,7 @@ module.exports = function(app) {
     // Groups
     app.route('/groups')
         .get(verify.manager, groupController.list_all_groups)
-        .post(verify.manager, groupController.create_a_group);
+        .post(verify.manager, validate.group, groupController.create_a_group);
 
     // grupe, ki jih je naredo prijavljen manager
     app.route('/groups/get/managerof')

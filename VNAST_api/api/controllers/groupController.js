@@ -4,6 +4,9 @@ var mongoose = require('mongoose'),
     User = mongoose.model('Users'),
     Task = mongoose.model('Tasks');
 
+const { validationResult } = require('express-validator/check');
+
+
 exports.list_all_groups = function(req, res) {
     Group.find({}, function(err, group) {
         if (err)
@@ -29,6 +32,13 @@ exports.update_a_group = function(req, res) {
 };
 
 exports.create_a_group = function(req, res) {
+    // validation errors?
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    // create group
     var new_group = new Group(req.body);
     new_group.created_by = req.user._id;
     new_group.save(function(err, group) {

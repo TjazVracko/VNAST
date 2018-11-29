@@ -5,6 +5,8 @@ var mongoose = require('mongoose'),
     Task = mongoose.model('Tasks'),
     Document = mongoose.model('Documents');
 
+const { validationResult } = require('express-validator/check');
+
 exports.list_all_tasks = function(req, res) {
     Task.find({}, function(err, task) {
         if (err)
@@ -14,6 +16,13 @@ exports.list_all_tasks = function(req, res) {
 };
 
 exports.create_a_task = function(req, res) {
+    // validation errors?
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    // create task
     var new_task = new Task(req.body);
     new_task.created_by = req.user._id;
     new_task.save(function(err, task) {
@@ -43,10 +52,30 @@ exports.update_a_task = function(req, res) {
 
 
 exports.delete_a_task = function(req, res) {
-    Task.deleteOne({_id: req.params.taskId}, function(err, task) {
+    Task.findById(req.params.taskId, function(err, task){
         if (err)
             res.send(err);
-        res.json({ message: 'Task successfully deleted' });
+        else {
+            // zbriši datoteke, ki pripadajo tasku:
+            task.documents.forEach((file, nekaj) => {
+                if(file)
+                    fs.unlink(path.resolve(file.path), (err) => {
+                        if (err) 
+                            console.log(err);
+                        else{
+                            console.log(file.filename + ' was deleted');
+                        }
+                    });
+            });
+
+            //nato zbriši celi task
+            Task.deleteOne({_id: req.params.taskId}, function(err) {
+                if (err)
+                    res.send(err);
+                
+                res.json({ message: 'Task successfully deleted' });
+            });
+        }
     });
 };
 
