@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "postinstall": "apidoc -i api/routes -o docs -t apidoc-template"
   },
   "author": "Nejc Klemenčič & Tjaž Vračko",
   "license": "MIT",
