@@ -35,6 +35,9 @@ app.use(expressValidator())
 var routes = require('./api/routes/vnastRoutes'); //importing route
 routes(app); //register the route
 
+//docs :)
+app.use('/', express.static('docs'))
+
 // midlleware, intercepts wrong API calls and returns nicer message
 app.use(function(req, res) {
     res.status(404).send({url: req.originalUrl + ' not found, or url is right but method is wrong (' + req.method + ')'})
