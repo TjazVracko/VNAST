@@ -469,7 +469,7 @@ module.exports = function(app) {
      *
      * @apiHeader {String} x-access-token Auth token.
      * 
-     * @apiSuccess {Task[]} tasks Tasks that were created b the manager corresponding to the JWT sent in the header
+     * @apiSuccess {Task[]} tasks Tasks that were created by the manager corresponding to the JWT sent in the header
      * 
      * @apiSuccessExample {json} Success Response Example:
                     [
@@ -517,17 +517,90 @@ module.exports = function(app) {
         .put(verify.worker, commentController.update_a_comment);
 
     // Groups
-    app.route('/groups')
-        .get(verify.manager, groupController.list_all_groups)
-        .post(verify.manager, validate.group, groupController.create_a_group);
 
     // grupe, ki jih je naredo prijavljen manager
     app.route('/groups/get/managerof')
+    /**
+     * @api {get} /groups/get/managerof Get groups created by logged in manager
+     * @apiName GetManagedGroups 
+     * @apiGroup Groups
+     * 
+     * @apiPermission manager
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiSuccess {Group[]} groups Groups that were created by the manager corresponding to the JWT sent in the header
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                    [
+                        {
+                            "workers": [
+                                "5bdecc3ec43948178a11f72e"
+                            ],
+                            "_id": "5bded1712f5a630c0079b6af",
+                            "name": "Group 1",
+                            "created_date": "2018-11-04T11:01:05.711Z",
+                            "created_by": "5bdecc29c43948178a11f72d",
+                            "__v": 0
+                        },
+                        {
+                            "workers": [
+                                "5bdecc3ec43948178a11f72e",
+                                "5bd98ed313a4e140743dbce6"
+                            ],
+                            "_id": "5bded17d2f5a630c0079b6b0",
+                            "name": "Najbolji Group",
+                            "created_date": "2018-11-04T11:01:17.805Z",
+                            "created_by": "5bdecc29c43948178a11f72d",
+                            "__v": 0
+                        }
+                    ]
+     */ 
         .get(verify.manager, groupController.list_managed_groups);
 
     // grupe, v katerih je prijavljen worker član
     app.route('/groups/get/memberin')
+    /**
+     * @api {get} /groups/get/memberin Get groups logged in worker is member in
+     * @apiName GetMyGroups 
+     * @apiGroup Groups
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiSuccess {Group[]} groups Groups that are assigned to the worker corresponding to the JWT sent in the header
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                    [
+                        {
+                            "workers": [
+                                "5bdecc3ec43948178a11f72e"
+                            ],
+                            "_id": "5bded1712f5a630c0079b6af",
+                            "name": "Group 1",
+                            "created_date": "2018-11-04T11:01:05.711Z",
+                            "created_by": "5bdecc29c43948178a11f72d",
+                            "__v": 0
+                        },
+                        {
+                            "workers": [
+                                "5bdecc3ec43948178a11f72e",
+                                "5bd98ed313a4e140743dbce6"
+                            ],
+                            "_id": "5bded17d2f5a630c0079b6b0",
+                            "name": "Najbolji Group",
+                            "created_date": "2018-11-04T11:01:17.805Z",
+                            "created_by": "5bdecc29c43948178a11f72d",
+                            "__v": 0
+                        }
+                    ]
+     */ 
         .get(verify.worker, groupController.list_participating_groups);
+
+    app.route('/groups')
+        .get(verify.manager, groupController.list_all_groups)
+        .post(verify.manager, validate.group, groupController.create_a_group);
 
     app.route('/groups/:groupId')
         .get(verify.worker, groupController.read_a_group)
