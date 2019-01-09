@@ -152,7 +152,7 @@ module.exports = function(app) {
      * @apiSuccess {String} email Email of the user.
      * @apiSuccess {ID} _id ID of the user.
      * @apiSuccessExample {json} Success Response Example:
-                   {
+                    {
                         "privilege": ["manager"],
                         "_id": "345678987654322345678",
                         "username": "klobasaman",
@@ -198,7 +198,7 @@ module.exports = function(app) {
      *
      * @apiSuccess {String} message Success message.
      * @apiSuccessExample {json} Success Response Example:
-                   {
+                    {
                         "message": "User successfully deleted"
                     }
      */
@@ -817,7 +817,7 @@ module.exports = function(app) {
      *
      * @apiSuccess {String} message Success message.
      * @apiSuccessExample {json} Success Response Example:
-                   {
+                    {
                         "message": "Group successfully deleted"
                     }
      */
@@ -910,7 +910,7 @@ module.exports = function(app) {
      * @apiSuccess {ID} created_by UserID of group creator.
      * 
      * @apiSuccessExample {json} Success Response Example:
-                   {
+                    {
                         "workers": [
                             "5bdb76f8cfe3c92dac94ff6a",
                             "5bdb6eb4112b2538b0921dd0"
@@ -1175,7 +1175,7 @@ module.exports = function(app) {
                     "created_date": "2019-01-09T16:01:07.822Z",
                     "assigned_to_group": "5bfdaeef4d24193bd4fbef16",
                     "__v": 0
-            }
+                }
      */
         .post(verify.manager, chatController.create_group_chat);
 

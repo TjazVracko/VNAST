@@ -528,7 +528,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success Response Example:",
-          "content": "    {\n        \"participants\": [\n            \"5bdb76f8cfe3c92dac94ff6a\",\n            \"5bdb6eb4112b2538b0921dd0\"\n        ],\n        \"messages\": [],\n        \"_id\": \"5c361ac3082a1e0bd091fdc0\",\n        \"created_date\": \"2019-01-09T16:01:07.822Z\",\n        \"assigned_to_group\": \"5bfdaeef4d24193bd4fbef16\",\n        \"__v\": 0\n}",
+          "content": "{\n    \"participants\": [\n        \"5bdb76f8cfe3c92dac94ff6a\",\n        \"5bdb6eb4112b2538b0921dd0\"\n    ],\n    \"messages\": [],\n    \"_id\": \"5c361ac3082a1e0bd091fdc0\",\n    \"created_date\": \"2019-01-09T16:01:07.822Z\",\n    \"assigned_to_group\": \"5bfdaeef4d24193bd4fbef16\",\n    \"__v\": 0\n}",
           "type": "json"
         }
       ]
@@ -1742,7 +1742,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success Response Example:",
-          "content": "{\n     \"message\": \"Group successfully deleted\"\n }",
+          "content": "{\n    \"message\": \"Group successfully deleted\"\n}",
           "type": "json"
         }
       ]
@@ -2175,7 +2175,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success Response Example:",
-          "content": "{\n     \"workers\": [\n         \"5bdb76f8cfe3c92dac94ff6a\",\n         \"5bdb6eb4112b2538b0921dd0\"\n     ],\n     \"_id\": \"5bfdaeef4d24193bd4fbef16\",\n     \"name\": \"group 1\",\n     \"created_date\": \"2018-11-27T20:54:07.355Z\",\n     \"created_by\": \"5bdb6eb4112b2538b0921dd0\",\n     \"__v\": 0\n }",
+          "content": "{\n    \"workers\": [\n        \"5bdb76f8cfe3c92dac94ff6a\",\n        \"5bdb6eb4112b2538b0921dd0\"\n    ],\n    \"_id\": \"5bfdaeef4d24193bd4fbef16\",\n    \"name\": \"group 1\",\n    \"created_date\": \"2018-11-27T20:54:07.355Z\",\n    \"created_by\": \"5bdb6eb4112b2538b0921dd0\",\n    \"__v\": 0\n}",
           "type": "json"
         }
       ]
@@ -3094,7 +3094,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success Response Example:",
-          "content": "{\n     \"message\": \"User successfully deleted\"\n }",
+          "content": "{\n    \"message\": \"User successfully deleted\"\n}",
           "type": "json"
         }
       ]
@@ -3217,7 +3217,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success Response Example:",
-          "content": "{\n     \"privilege\": [\"manager\"],\n     \"_id\": \"345678987654322345678\",\n     \"username\": \"klobasaman\",\n     \"email\": \"klobasaman@email.com\",\n }",
+          "content": "{\n    \"privilege\": [\"manager\"],\n    \"_id\": \"345678987654322345678\",\n    \"username\": \"klobasaman\",\n    \"email\": \"klobasaman@email.com\",\n}",
           "type": "json"
         }
       ]
