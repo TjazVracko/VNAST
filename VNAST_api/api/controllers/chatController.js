@@ -65,11 +65,15 @@ exports.add_message = function(req, res) {
     new_message.content = req.body.content;
     new_message.created_by = req.user._id;
     new_message.save(function(err, message) {
-        ChatContainer.findOneAndUpdate({_id: req.params.chatId}, {$push: {messages: message._id}}, {new: true}, function(err, chat) {
-            if (err)
+        if (err)
             res.send(err);
-        res.json(chat);
-        });
+        else {
+            ChatContainer.findOneAndUpdate({_id: req.params.chatId}, {$push: {messages: message._id}}, {new: true}, function(err, chat) {
+                if (err)
+                    res.send(err);
+            res.json(chat);
+            });
+        }
     });
 };
 
@@ -88,16 +92,20 @@ exports.read_all_workers_in_group = function(req, res) {
 };
 */
 
-//vrne vsa sporočila iz /chat/:chatId
+
+//vrne vsa sporočila iz /chat/:chatId in /groups/:groupId/chats/:chatId
 exports.list_all_messages = function(req, res) {
     ChatContainer.find({_id: req.params.chatId}, function(err, chat) {
         if (err)
             res.send(err);
-        Message.find({_id: {$in: chat[0].messages}}, function(err, messages) {
+        else if (chat === null || chat.length === 0) res.json({message: 'Chat does not exist!'});
+        else {
+            Message.find({_id: {$in: chat[0].messages}}, function(err, messages) {
             if (err)
                 res.send(err);
             res.json(messages);
-        });
+            });
+        }
     });
 };
 
