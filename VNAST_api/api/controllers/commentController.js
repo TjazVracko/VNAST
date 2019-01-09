@@ -32,7 +32,7 @@ exports.create_a_comment = function(req, res) {
 };
 
 exports.delete_a_comment = function(req, res) {
-    Comment.deleteOne({_id: req.body.commentId}, function(err, comment) {
+    Comment.deleteOne({_id: req.params.commentId}, function(err, comment) {
         if (err)
             res.send(err);
         res.json({ message: 'Comment successfully deleted' });
