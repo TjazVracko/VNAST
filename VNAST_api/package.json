@@ -5,16 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "postinstall": "apidoc -i api/routes -o docs -t apidoc-template"
   },
   "author": "Nejc Klemenčič & Tjaž Vračko",
   "license": "MIT",
   "devDependencies": {
-    "nodemon": "^1.18.6"
+    "nodemon": "^1.18.9"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "express": "^4.16.4",
+    "express-validator": "^5.3.0",
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.3.6",
     "multer": "^1.4.1"

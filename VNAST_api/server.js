@@ -11,7 +11,8 @@ var express = require('express'),
     Message = require('./api/models/messageModel')
 
     bodyParser = require('body-parser'),
-    config = require('./config');
+    config = require('./config'),
+    expressValidator = require('express-validator');
   
 // DATABASE
 // mongoose instance connection url connection
@@ -28,10 +29,14 @@ mongoose.connect(config.mongoURL, { useNewUrlParser: true }, function(err) {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// file upload middleware
+app.use(expressValidator())
+
 
 var routes = require('./api/routes/vnastRoutes'); //importing route
 routes(app); //register the route
+
+//docs :)
+app.use('/', express.static('docs'))
 
 // midlleware, intercepts wrong API calls and returns nicer message
 app.use(function(req, res) {

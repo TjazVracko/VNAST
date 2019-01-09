@@ -2,6 +2,9 @@
 var mongoose = require('mongoose'),
     Comment = mongoose.model('Comments');
 
+
+const { validationResult } = require('express-validator/check');
+
 exports.list_all_comments = function(req, res) {
     Comment.find({assigned_to_task: req.params.taskId}, function(err, comment) {
         if (err)
@@ -11,6 +14,13 @@ exports.list_all_comments = function(req, res) {
 };
 
 exports.create_a_comment = function(req, res) {
+    // validation errors?
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    // create comment
     var new_comment = new Comment(req.body);
     new_comment.assigned_to_task = req.params.taskId;
     new_comment.created_by = req.user._id;
