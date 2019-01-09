@@ -152,7 +152,7 @@ module.exports = function(app) {
      * @apiSuccess {String} email Email of the user.
      * @apiSuccess {ID} _id ID of the user.
      * @apiSuccessExample {json} Success Response Example:
-                   {
+                    {
                         "privilege": ["manager"],
                         "_id": "345678987654322345678",
                         "username": "klobasaman",
@@ -163,11 +163,13 @@ module.exports = function(app) {
 
 
     /**
-     * @api {put} /user/:userId Update existing user
+     * @api {put} /users/:userId Update existing user
      * @apiName UpdateUser
      * @apiGroup Users
      * 
      * @apiPermission admin
+     * 
+     * @apiHeader {String} x-access-token Auth token.
      *
      * @apiParam (Path Param) {ID} :userId The User ID.
      * 
@@ -196,7 +198,7 @@ module.exports = function(app) {
      *
      * @apiSuccess {String} message Success message.
      * @apiSuccessExample {json} Success Response Example:
-                   {
+                    {
                         "message": "User successfully deleted"
                     }
      */
@@ -258,7 +260,7 @@ module.exports = function(app) {
      */
         .get(verify.worker, taskController.list_all_tasks)
     /**
-     * @api {post} /tasks Create new Task
+     * @api {post} /tasks Create new task
      * @apiName CreateTask
      * @apiGroup Tasks
      * 
@@ -309,7 +311,7 @@ module.exports = function(app) {
      */
         .get(verify.worker, taskController.read_a_task)
     /**
-     * @api {put} /tasks/:taskId Update a Task
+     * @api {put} /tasks/:taskId Update a task
      * @apiName UpdateTask
      * @apiGroup Tasks
      * 
@@ -508,16 +510,127 @@ module.exports = function(app) {
 
     // Comments 
     app.route('/tasks/:taskId/comments')
-    // app.route('/comments/:taskId')
+    /**
+     * @api {get} /tasks/:taskId/comments Request comment list
+     * @apiName GetComments 
+     * @apiGroup Comments
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiSuccess {Comment[]} comments Array of Comment objects (see CreateComment for details).
+     * @apiSuccessExample {json} Success Response Example:
+                [
+                    {
+                        "_id": "5bdc9f063efba42be0125ed9",
+                        "content": "Hello, this is my comment!",
+                        "created_date": "2018-11-02T19:01:26.268Z",
+                        "assigned_to_task": "5bdc985fc72fcf3c6c1446ff",
+                        "__v": 0
+                    },
+                    {
+                        "_id": "5be3596414489e158c6be032",
+                        "content": "Hello PURO, this is my fifth comment!",
+                        "created_date": "2018-11-07T21:30:12.236Z",
+                        "assigned_to_task": "5bdc985fc72fcf3c6c1446ff",
+                        "created_by": "5bdb6eb4112b2538b0921dd0",
+                        "__v": 0
+                    },
+                    {
+                        "_id": "5c361e5aa784c82e4cfc5b38",
+                        "content": "What do we even have to do?",
+                        "created_date": "2019-01-09T16:16:26.860Z",
+                        "assigned_to_task": "5bdc985fc72fcf3c6c1446ff",
+                        "created_by": "5bdb6eb4112b2538b0921dd0",
+                        "__v": 0
+                    }
+                ]
+     */ 
         .get(verify.worker, commentController.list_all_comments)
+
+
+    /**
+     * @api {post} /tasks/:taskId/comments Create comment
+     * @apiName CreateComment 
+     * @apiGroup Comments
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :taskId The Task ID.
+     * 
+     * @apiSuccess {ID} _id ID of the comment.
+     * @apiSuccess {String} content Content of the comment.
+     * @apiSuccess {Date} created_date DateTime this group was created.
+     * @apiSuccess {ID} created_by UserID of group creator.
+     * @apiSuccess {ID} assigned_to_task ID of group chat is assigned to
+     * @apiSuccessExample {json} Success Response Example: 
+                    {
+                        "_id": "5c361e5aa784c82e4cfc5b38",
+                        "content": "What do we even have to do?",
+                        "created_date": "2019-01-09T16:16:26.860Z",
+                        "assigned_to_task": "5bdc985fc72fcf3c6c1446ff",
+                        "created_by": "5bdb6eb4112b2538b0921dd0",
+                        "__v": 0
+                    }
+     */ 
+    
         .post(verify.worker, validate.comment, commentController.create_a_comment);
 
     app.route('/tasks/:taskId/comments/:commentId')
+    /**
+     * @api {delete} /tasks/:taskId/comments/:commentId Delete comment by ID
+     * @apiName DeleteComment
+     * @apiGroup Comments
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :taskId The Task ID.
+     * @apiParam (Path Param) {String} :commentId The Comment ID.
+     *
+     * @apiSuccess {String} message Success message.
+     * @apiSuccessExample {json} Success Response Example:
+                {
+                    "message": "Comment successfully deleted"
+                }
+     */
         .delete(verify.worker, commentController.delete_a_comment)
+
+
+    /**
+     * @api {put} /tasks/:taskId/comments/:commentId Update existing comment
+     * @apiName UpdateComment 
+     * @apiGroup Comments
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :taskId The Task ID.
+     * @apiParam (Path Param) {String} :commentId The Comment ID.
+     * 
+     * @apiSuccess {ID} _id ID of the comment.
+     * @apiSuccess {String} content Content of the comment.
+     * @apiSuccess {Date} created_date DateTime this group was created.
+     * @apiSuccess {ID} created_by UserID of group creator.
+     * @apiSuccess {ID} assigned_to_task ID of group chat is assigned to
+     * @apiSuccessExample {json} Success Response Example: 
+                {
+                    "_id": "5be3596414489e158c6be032",
+                    "content": "Testing functionality of update comment",
+                    "created_date": "2018-11-07T21:30:12.236Z",
+                    "assigned_to_task": "5bdc985fc72fcf3c6c1446ff",
+                    "created_by": "5bdb6eb4112b2538b0921dd0",
+                    "__v": 0
+                }
+     */ 
         .put(verify.worker, commentController.update_a_comment);
 
     // Groups
-
     // grupe, ki jih je naredo prijavljen manager
     app.route('/groups/get/managerof')
     /**
@@ -599,41 +712,565 @@ module.exports = function(app) {
         .get(verify.worker, groupController.list_participating_groups);
 
     app.route('/groups')
+    /**
+     * @api {get} /groups Request group list
+     * @apiName GetGroups 
+     * @apiGroup Groups
+     * 
+     * @apiPermission manager
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiSuccess {Group[]} groups Array of Group objects (see GetGroup for details).
+     */ 
         .get(verify.manager, groupController.list_all_groups)
+
+
+    /**
+     * @api {post} /groups Create new group
+     * @apiName CreateGroup
+     * @apiGroup Groups
+     * 
+     * @apiPermission manager
+     *
+     * @apiParam {String} name Group name.
+     * 
+     * @apiSuccess {User[]} workers Array of user objects.
+     * @apiSuccess {ID} _id ID of the group.
+     * @apiSuccess {String} name Name of the group.
+     * @apiSuccess {Date} created_date DateTime this group was created.
+     * @apiSuccess {ID} created_by UserID of group creator.
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                   {
+                        "workers": [],
+                        "_id": "5c360423312a132b04536e9d",
+                        "name": "Rups best group",
+                        "created_date": "2019-01-09T14:24:35.793Z",
+                        "created_by": "5bdb6eb4112b2538b0921dd0",
+                        "__v": 0
+                    }  
+     */    
         .post(verify.manager, validate.group, groupController.create_a_group);
 
     app.route('/groups/:groupId')
+    /**
+     * @api {get} /groups/:groupId Request group by ID
+     * @apiName GetGroups
+     * @apiGroup Groups
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :groupId The Group ID.
+     *
+     * @apiSuccess {User[]} workers Array of user objects.
+     * @apiSuccess {ID} _id ID of the group.
+     * @apiSuccess {String} name Name of the group.
+     * @apiSuccess {Date} created_date DateTime this group was created.
+     * @apiSuccess {ID} created_by UserID of group creator.
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                   {
+                        "workers": [],
+                        "_id": "5c360423312a132b04536e9d",
+                        "name": "Rups best group",
+                        "created_date": "2019-01-09T14:24:35.793Z",
+                        "created_by": "5bdb6eb4112b2538b0921dd0",
+                        "__v": 0
+                    } 
+     */
         .get(verify.worker, groupController.read_a_group)
+
+    /**
+     * @api {put} /groups/:groupId Update existing group
+     * @apiName UpdateGroup
+     * @apiGroup Groups
+     * 
+     * @apiPermission manager
+     * 
+     * @apiHeader {String} x-access-token Auth token.
+     *
+     * @apiParam (Path Param) {ID} :groupId The Group ID.
+     * @apiParam {String} [name] Group name.
+     * 
+     * @apiSuccess {User[]} workers Array of user objects.
+     * @apiSuccess {ID} _id ID of the group.
+     * @apiSuccess {String} name Name of the group.
+     * @apiSuccess {Date} created_date DateTime this group was created.
+     * @apiSuccess {ID} created_by UserID of group creator.
+     *
+     */
         .put(verify.manager, groupController.update_a_group)
+
+    /**
+     * @api {delete} /groups/:groupId Delete group by ID
+     * @apiName DeleteGroup
+     * @apiGroup Groups
+     * 
+     * @apiPermission manager
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {ID} :groupId The Group ID.
+     *
+     * @apiSuccess {String} message Success message.
+     * @apiSuccessExample {json} Success Response Example:
+                    {
+                        "message": "Group successfully deleted"
+                    }
+     */
         .delete(verify.manager, groupController.delete_a_group); 
 
     app.route('/groups/:groupId/workers')
+    /**
+     * @api {get} /groups/:groupId/workers Request workers assigned to group
+     * @apiName GetWorkers
+     * @apiGroup Groups
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :groupId The Group ID.
+     *
+     * @apiSuccess {User[]} workers Array of user objects.
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                [
+                    {
+                        "privilege": [
+                            "admin"
+                        ],
+                        "_id": "5bdb6eb4112b2538b0921dd0",
+                        "username": "admin",
+                        "email": "bla@gmail.com",
+                        "__v": 0
+                    },
+                    {
+                        "privilege": null,
+                        "_id": "5bdb76f8cfe3c92dac94ff6a",
+                        "username": "worker4",
+                        "__v": 0,
+                        "email": null
+                    }
+                ]
+     */
         .get(verify.worker, groupController.read_all_workers_in_group)
+
+
+    /**
+     * @api {post} /groups/:groupId/workers Assign worker to group
+     * @apiName AssignWorkerToGroup
+     * @apiGroup Groups
+     * 
+     * @apiPermission manager
+     *
+     * @apiParam (Path Param) {String} :groupId The Group ID.
+     * @apiParam {String} userId ID of user being assigned to group.
+     * 
+     * @apiSuccess {User[]} workers Array of user objects.
+     * @apiSuccess {ID} _id ID of the group.
+     * @apiSuccess {String} name Name of the group.
+     * @apiSuccess {Date} created_date DateTime this group was created.
+     * @apiSuccess {ID} created_by UserID of group creator.
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                   {
+                        "workers": [
+                            "5bfdaeef4d24193bd4fbef16",
+                            "5bdb76f8cfe3c92dac94ff6a",
+                            "5bdb6eb4112b2538b0921dd0"
+                        ],
+                        "_id": "5bfdaeef4d24193bd4fbef16",
+                        "name": "group 1",
+                        "created_date": "2018-11-27T20:54:07.355Z",
+                        "created_by": "5bdb6eb4112b2538b0921dd0",
+                        "__v": 0
+                    }  
+     */    
         .post(verify.manager, groupController.assign_user_to_group)
+
+
+    /**
+     * @api {delete} /groups/:groupId/workers Remove worker from group
+     * @apiName RemoveWorkerFromGroup
+     * @apiGroup Groups
+     * 
+     * @apiPermission manager
+     *
+     * @apiParam (Path Param) {String} :groupId The Group ID.
+     * @apiParam {String} userId ID of user being removed from group.
+     * 
+     * @apiSuccess {User[]} workers Array of user objects.
+     * @apiSuccess {ID} _id ID of the group.
+     * @apiSuccess {String} name Name of the group.
+     * @apiSuccess {Date} created_date DateTime this group was created.
+     * @apiSuccess {ID} created_by UserID of group creator.
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                    {
+                        "workers": [
+                            "5bdb76f8cfe3c92dac94ff6a",
+                            "5bdb6eb4112b2538b0921dd0"
+                        ],
+                        "_id": "5bfdaeef4d24193bd4fbef16",
+                        "name": "group 1",
+                        "created_date": "2018-11-27T20:54:07.355Z",
+                        "created_by": "5bdb6eb4112b2538b0921dd0",
+                        "__v": 0
+                    }  
+     */  
         .delete(verify.manager, groupController.remove_user_from_group);
 
     app.route('/groups/:groupId/tasks')
+    /**
+     * @api {get} /groups/:groupId/tasks Request tasks assigned to group
+     * @apiName GetTasks
+     * @apiGroup Groups
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :groupId The Group ID.
+     *
+     * @apiSuccess {Task[]} tasks Array of task objects.
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                [
+                    {
+                        "priority": "2",
+                        "status": [
+                            "pending"
+                        ],
+                        "_id": "5bdc985fc72fcf3c6c1446ff",
+                        "name": "First task",
+                        "description": "First task description",
+                        "documents": [],
+                        "created_date": "2018-11-02T18:33:03.656Z",
+                        "__v": 0,
+                        "assigned_to_worker": "5bdb7af880d78818b83bb534",
+                        "assigned_to_group": "5bfdaeef4d24193bd4fbef16"
+                    }
+                ]
+     */
+
         .get(verify.worker, groupController.read_all_tasks_in_group)
 
     // Chats
     app.route('/chats')
+    /**
+     * @api {get} /chats Request chat list
+     * @apiName GetChats
+     * @apiGroup Chats
+     * 
+     * @apiPermission manager
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     *
+     * @apiSuccess {Chat[]} chats Array of chat objects (see CreateChat for details).
+     */
         .get(verify.manager, chatController.list_all_chats)
+
+    /**
+     * @api {post} /chats Create new chat
+     * @apiName CreateChat
+     * @apiGroup Chats
+     * 
+     * @apiPermission worker
+     *
+     * @apiParam {String} userId ID of user creating a chat with
+     *
+     * @apiSuccess {User[]} participants Array of User objects.
+     * @apiSuccess {Message[]} messages Array of Message objects.
+     * @apiSuccess {ID} _id ID of the new chat.
+     * @apiSuccess {Date} created_date DateTime this task was created.
+
+     * @apiSuccessExample {json} Success Response Example:
+                {
+                    "participants": [
+                        "5bdb6eb4112b2538b0921dd0",
+                        "5bdb7af880d78818b83bb534"
+                    ],
+                    "messages": [],
+                    "_id": "5c36156486166c2b4cb556e3",
+                    "created_date": "2019-01-09T15:38:12.234Z",
+                    "__v": 0
+                }
+     */
         .post(verify.worker, chatController.create_a_chat);
     
     app.route('/chats/get/memberin')
+     /**
+     * @api {get} /chats/get/memberin Get chats participating in
+     * @apiName GetMyChats 
+     * @apiGroup Chats
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiSuccess {Chat[]} chats Chats that are assigned to the user corresponding to the JWT sent in the header
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                [
+                    {
+                        "participants": [
+                            "5bdb6eb4112b2538b0921dd0",
+                            null
+                        ],
+                        "messages": [],
+                        "_id": "5bff13fe0efecf1ec47c1fda",
+                        "created_date": "2018-11-28T22:17:34.256Z",
+                        "__v": 0
+                    },
+                    {
+                        "participants": [
+                            "5bdb6eb4112b2538b0921dd0",
+                            "5bdb7af880d78818b83bb534"
+                        ],
+                        "messages": [],
+                        "_id": "5c36156486166c2b4cb556e3",
+                        "created_date": "2019-01-09T15:38:12.234Z",
+                        "__v": 0
+                    }
+                ]
+     */ 
         .get(verify.worker, chatController.list_participating_chats);
 
     app.route('/chats/:chatId')
+    /**
+     * @api {get} /chats/:chatId Request messages assigned to chat
+     * @apiName GetMessages
+     * @apiGroup Chats
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :chatId The Chat ID.
+     *
+     * @apiSuccess {Message[]} messages Array of message objects.
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                [
+                    {
+                        "_id": "5c3618c35046b838886d8e16",
+                        "created_date": "2019-01-09T15:52:35.259Z",
+                        "content": "hello this is my first msg",
+                        "created_by": "5bdb6eb4112b2538b0921dd0",
+                        "__v": 0
+                    }
+                ]
+     */
         .get(verify.worker, chatController.list_all_messages)
+
+
+   /**
+     * @api {post} /chats/:chatId Add message to chat
+     * @apiName AddMessageToChat
+     * @apiGroup Chats
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :chatId The Chat ID.
+     * @apiParam {String} content Message content.
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                {
+                    "participants": [
+                        "5bdb6eb4112b2538b0921dd0",
+                        "5bdb7af880d78818b83bb534"
+                    ],
+                    "messages": [
+                        "5c3618c35046b838886d8e16"
+                    ],
+                    "_id": "5c36156486166c2b4cb556e3",
+                    "created_date": "2019-01-09T15:38:12.234Z",
+                    "__v": 0
+                }
+     */
         .post(verify.worker, chatController.add_message)
+
+    
+    
+    /**
+     * @api {delete} /chats/:chatId Delete chat by ID
+     * @apiName DeleteChat
+     * @apiGroup Chats
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {ID} :chatId The Chat ID.
+     *
+     * @apiSuccess {String} message Success message.
+     * @apiSuccessExample {json} Success Response Example:
+                {
+                    "message": "Chat successfully deleted"
+                }
+     */
         .delete(verify.worker, chatController.delete_a_chat);
 
     app.route('/groups/:groupId/chats')
+    /**
+     * @api {get} /groups/:groupId/chats Request chats assigned to group
+     * @apiName GetGroupChats
+     * @apiGroup Chats
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :groupId The Group ID.
+     *
+     * @apiSuccess {Chat[]} messages Array of chat objects.
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                [
+                    {
+                        "participants": [
+                            "5bdb76f8cfe3c92dac94ff6a",
+                            "5bdb6eb4112b2538b0921dd0"
+                        ],
+                        "messages": [],
+                        "_id": "5c361a2f5fb78f39f87fe954",
+                        "created_date": "2019-01-09T15:58:39.761Z",
+                        "assigned_to_group": "5bfdaeef4d24193bd4fbef16",
+                        "__v": 0
+                    }
+                ]
+     */
         .get(verify.worker, chatController.list_group_chats)
+
+
+    /**
+     * @api {post} /groups/:groupId/chats Create new group chat
+     * @apiName CreateGroupChat
+     * @apiGroup Chats
+     * 
+     * @apiPermission manager
+     * 
+     * @apiParam (Path Param) {String} :groupId The Group ID.
+     *
+     * @apiSuccess {User[]} participants Array of User objects.
+     * @apiSuccess {Message[]} messages Array of Message objects.
+     * @apiSuccess {ID} _id ID of the new chat.
+     * @apiSuccess {Date} created_date DateTime this task was created.
+     * @apiSuccess {ID} assigned_to_group ID of group chat is assigned to
+
+     * @apiSuccessExample {json} Success Response Example:
+                {
+                    "participants": [
+                        "5bdb76f8cfe3c92dac94ff6a",
+                        "5bdb6eb4112b2538b0921dd0"
+                    ],
+                    "messages": [],
+                    "_id": "5c361ac3082a1e0bd091fdc0",
+                    "created_date": "2019-01-09T16:01:07.822Z",
+                    "assigned_to_group": "5bfdaeef4d24193bd4fbef16",
+                    "__v": 0
+                }
+     */
         .post(verify.manager, chatController.create_group_chat);
 
     app.route('/groups/:groupId/chats/:chatId')
+    /**
+     * @api {get} /groups/:groupId/chats/:chatId Request messages assigned to group chat
+     * @apiName GetGroupChatMessages
+     * @apiGroup Chats
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :groupId The Group ID.
+     * @apiParam (Path Param) {String} :chatId The Chat ID.
+     *
+     * @apiSuccess {Message[]} messages Array of message objects.
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                [
+                    {
+                        "_id": "5c361bed2a2e1327847431f2",
+                        "created_date": "2019-01-09T16:06:05.220Z",
+                        "content": "How is your work progressing?",
+                        "created_by": "5bdb6eb4112b2538b0921dd0",
+                        "__v": 0
+                    },
+                    {
+                        "_id": "5c361cdb6e39c031c046baac",
+                        "created_date": "2019-01-09T16:10:03.529Z",
+                        "content": "We're behind schedule.",
+                        "created_by": "5bdb6eb4112b2538b0921dd0",
+                        "__v": 0
+                    }
+                ]
+     */
         .get(verify.worker, chatController.list_all_messages)
+
+
+
+    /**
+     * @api {post} /groups/:groupId/chats/:chatId Add message to chat
+     * @apiName AddMessageToChat
+     * @apiGroup Chats
+     * 
+     * @apiPermission worker
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :groupId The Group ID.
+     * @apiParam (Path Param) {String} :chatId The Chat ID.
+     * @apiParam {String} content Message content.
+     * 
+     * @apiSuccess {User[]} participants Array of User objects.
+     * @apiSuccess {Message[]} messages Array of Message objects.
+     * @apiSuccess {ID} _id ID of the chat.
+     * @apiSuccess {Date} created_date DateTime this task was created.
+     * @apiSuccess {ID} assigned_to_group ID of group chat is assigned to
+     * 
+     * @apiSuccessExample {json} Success Response Example:
+                {
+                    "participants": [
+                        "5bdb76f8cfe3c92dac94ff6a",
+                        "5bdb6eb4112b2538b0921dd0",
+                        "5bdb6eb4112b2538b0921dd0"
+                    ],
+                    "messages": [
+                        "5c361bed2a2e1327847431f2"
+                    ],
+                    "_id": "5c361ac3082a1e0bd091fdc0",
+                    "created_date": "2019-01-09T16:01:07.822Z",
+                    "assigned_to_group": "5bfdaeef4d24193bd4fbef16",
+                    "__v": 0
+                }
+     */
         .post(verify.worker, chatController.add_message)
+
+
+    /**
+     * @api {delete} /groups/:groupId/chats/:chatId Delete group chat by ID
+     * @apiName DeleteGroupChat
+     * @apiGroup Chats
+     * 
+     * @apiPermission manager
+     *
+     * @apiHeader {String} x-access-token Auth token.
+     * 
+     * @apiParam (Path Param) {String} :groupId The Group ID.
+     * @apiParam (Path Param) {String} :chatId The Chat ID.
+     *
+     * @apiSuccess {String} message Success message.
+     * @apiSuccessExample {json} Success Response Example:
+                {
+                    "message": "Chat successfully deleted"
+                }
+     */
         .delete(verify.manager, chatController.delete_a_chat);
 };
