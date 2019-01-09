@@ -512,6 +512,102 @@ define({ "api": [
     "groupTitle": "Files"
   },
   {
+    "type": "get",
+    "url": "/groups/get/managerof",
+    "title": "Get groups created by logged in manager",
+    "name": "GetManagedGroups",
+    "group": "Groups",
+    "permission": [
+      {
+        "name": "manager"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Group[]",
+            "optional": false,
+            "field": "groups",
+            "description": "<p>Groups that were created by the manager corresponding to the JWT sent in the header</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response Example:",
+          "content": "[\n    {\n        \"workers\": [\n            \"5bdecc3ec43948178a11f72e\"\n        ],\n        \"_id\": \"5bded1712f5a630c0079b6af\",\n        \"name\": \"Group 1\",\n        \"created_date\": \"2018-11-04T11:01:05.711Z\",\n        \"created_by\": \"5bdecc29c43948178a11f72d\",\n        \"__v\": 0\n    },\n    {\n        \"workers\": [\n            \"5bdecc3ec43948178a11f72e\",\n            \"5bd98ed313a4e140743dbce6\"\n        ],\n        \"_id\": \"5bded17d2f5a630c0079b6b0\",\n        \"name\": \"Najbolji Group\",\n        \"created_date\": \"2018-11-04T11:01:17.805Z\",\n        \"created_by\": \"5bdecc29c43948178a11f72d\",\n        \"__v\": 0\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/routes/vnastRoutes.js",
+    "groupTitle": "Groups"
+  },
+  {
+    "type": "get",
+    "url": "/groups/get/memberin",
+    "title": "Get groups logged in worker is member in",
+    "name": "GetMyGroups",
+    "group": "Groups",
+    "permission": [
+      {
+        "name": "worker"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Group[]",
+            "optional": false,
+            "field": "groups",
+            "description": "<p>Groups that are assigned to the worker corresponding to the JWT sent in the header</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response Example:",
+          "content": "[\n    {\n        \"workers\": [\n            \"5bdecc3ec43948178a11f72e\"\n        ],\n        \"_id\": \"5bded1712f5a630c0079b6af\",\n        \"name\": \"Group 1\",\n        \"created_date\": \"2018-11-04T11:01:05.711Z\",\n        \"created_by\": \"5bdecc29c43948178a11f72d\",\n        \"__v\": 0\n    },\n    {\n        \"workers\": [\n            \"5bdecc3ec43948178a11f72e\",\n            \"5bd98ed313a4e140743dbce6\"\n        ],\n        \"_id\": \"5bded17d2f5a630c0079b6b0\",\n        \"name\": \"Najbolji Group\",\n        \"created_date\": \"2018-11-04T11:01:17.805Z\",\n        \"created_by\": \"5bdecc29c43948178a11f72d\",\n        \"__v\": 0\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/routes/vnastRoutes.js",
+    "groupTitle": "Groups"
+  },
+  {
     "type": "post",
     "url": "/tasks",
     "title": "Create new Task",
@@ -771,7 +867,7 @@ define({ "api": [
             "type": "Task[]",
             "optional": false,
             "field": "tasks",
-            "description": "<p>Tasks that were created b the manager corresponding to the JWT sent in the header</p>"
+            "description": "<p>Tasks that were created by the manager corresponding to the JWT sent in the header</p>"
           }
         ]
       },
