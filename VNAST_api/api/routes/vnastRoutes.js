@@ -386,7 +386,7 @@ module.exports = function(app) {
      *
      * @apiSuccess {File-Binary} file File download starts - "File download as attachment" (dobiš binary al nekaj) 
      */ 
-        .get(verify.worker, taskController.download_a_file)
+        .get(taskController.download_a_file)
      /**
      * @api {delete} /tasks/:taskId/files/:fileId Delete a File
      * @apiName DeleteFile 
