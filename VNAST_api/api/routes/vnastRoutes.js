@@ -370,7 +370,7 @@ module.exports = function(app) {
      * @apiUse TaskSucces
      * @apiUse TaskSuccesExample
      */  
-        .post(verify.manager, upload.any(), taskController.upload_files); // fajli so v req.files
+        .post(upload.any(), taskController.upload_files); // fajli so v req.files
 
     app.route('/tasks/:taskId/files/:fileId')
     /**
